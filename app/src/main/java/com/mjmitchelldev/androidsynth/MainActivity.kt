@@ -86,7 +86,7 @@ private fun ControlsPanel(
             .fillMaxWidth()
             .fillMaxHeight(),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
         Column(
             modifier = modifier.fillMaxWidth(0.7f),
@@ -115,7 +115,7 @@ private fun ControlsPanel(
             //}
         }
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .fillMaxWidth()
@@ -216,7 +216,7 @@ private fun FilterControl(
         // on slider position change, update the slider position and the ViewModel
         onValueChange = {
             sliderPosition.value = it
-            synthesizerViewModel.setFrequencySliderPosition(it)
+            synthesizerViewModel.setFilterCutoffSliderPosition(it)
         },
         // this range is now [0, 1] because the ViewModel is responsible for calculating the frequency
         // out of the slider position
@@ -282,7 +282,7 @@ private fun VolumeControlContent(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.8f)
+            .fillMaxHeight()
             .offset(y = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
@@ -308,7 +308,7 @@ private fun WavetableSelectionPanel(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.5f),
+            .fillMaxHeight(0.3f),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {

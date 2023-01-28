@@ -29,6 +29,7 @@ namespace wavetablesynthesizer {
                 std::dynamic_pointer_cast<BiquadFilter>(std::make_shared<ButterworthLowPassFilter>(_signalSummer,
                         SamplingRate));
 
+        //_audioPlayer = std::make_unique<OboeAudioPlayer>(_signalSummer, SamplingRate);
         _audioPlayer = std::make_unique<OboeAudioPlayer>(_globalFilter, SamplingRate);
 
     }
