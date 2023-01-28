@@ -5,7 +5,7 @@
 
 extern "C" {
 JNIEXPORT jlong JNICALL
-Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_create(
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_create(
         JNIEnv *env,
         jobject obj) {
     auto synthesizer =
@@ -20,7 +20,7 @@ Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_create(
 }
 
 JNIEXPORT void JNICALL
-Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_delete(
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_delete(
         JNIEnv *env,
         jobject obj,
         jlong synthesizerHandle) {
@@ -37,7 +37,7 @@ Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_delete(
 }
 
 JNIEXPORT void JNICALL
-Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_play(
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_play(
         JNIEnv *env,
         jobject obj,
         jlong synthesizerHandle) {
@@ -55,7 +55,7 @@ Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_play(
 }
 
 JNIEXPORT void JNICALL
-Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_stop(
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_stop(
         JNIEnv *env,
         jobject obj,
         jlong synthesizerHandle) {
@@ -73,7 +73,7 @@ Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_stop(
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_isPlaying(
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_isPlaying(
         JNIEnv *env,
         jobject obj,
         jlong synthesizerHandle) {
@@ -92,7 +92,7 @@ Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_isPlaying
 }
 
 JNIEXPORT void JNICALL
-Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_setFrequency(
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setFrequency(
         JNIEnv *env,
         jobject obj,
         jlong synthesizerHandle,
@@ -112,7 +112,23 @@ Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_setFreque
 }
 
 JNIEXPORT void JNICALL
-Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_setVolume(
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setFilterCutoffFrequency(
+    JNIEnv *env, jobject obj, jlong synthesizerHandle, jfloat frequencyInHz) {
+    auto *synthesizer = reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+        synthesizerHandle);
+    const auto nativeFrequency = static_cast<float>(frequencyInHz);
+
+    if (synthesizer) {
+        synthesizer->setFilterCutoffFrequency(nativeFrequency);
+    } else {
+        LOGD(
+            "Synthesizer not created. Please, create the synthesizer first by "
+            "calling create().");
+    }
+}
+
+JNIEXPORT void JNICALL
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setVolume(
         JNIEnv *env,
         jobject obj,
         jlong synthesizerHandle,
@@ -132,7 +148,7 @@ Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_setVolume
 }
 
 JNIEXPORT void JNICALL
-Java_com_mjmitchelldev_wavetablesynthesizer_NativeWavetableSynthesizer_setWavetable(
+Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setWavetable(
         JNIEnv *env,
         jobject obj,
         jlong synthesizerHandle,

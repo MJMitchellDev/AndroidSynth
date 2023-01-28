@@ -57,6 +57,11 @@ namespace wavetablesynthesizer {
         _oscillators[1]->setFrequency(frequencyInHz * 5 / 4);
     }
 
+    void WavetableSynthesizer::setFilterCutoffFrequency(float frequencyInHz) {
+        LOGD("Frequency set to %.2f Hz.", frequencyInHz);
+        _globalFilter->updateFrequencyCutoff(frequencyInHz);
+    }
+
     void WavetableSynthesizer::setVolume(float volumeInDb) {
         LOGD("Volume set to %.2f dB.", volumeInDb);
         const auto amplitude = dBToAmplitude(volumeInDb);

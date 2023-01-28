@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mjmitchelldev.androidsynth.ui.theme.WavetableSynthesizerTheme
@@ -82,8 +83,8 @@ private fun ControlsPanel(
 ) {
     Row(
         modifier = modifier
-          .fillMaxWidth()
-          .fillMaxHeight(),
+            .fillMaxWidth()
+            .fillMaxHeight(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -91,15 +92,34 @@ private fun ControlsPanel(
             modifier = modifier.fillMaxWidth(0.7f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PitchControl(modifier, synthesizerViewModel)
-            PlayControl(modifier, synthesizerViewModel)
+//            Row(
+//                modifier = modifier
+//                    .fillMaxWidth().height(Dp(100.0f)),
+//                horizontalArrangement = Arrangement.Center,
+//                verticalAlignment = Alignment.Top
+//            )
+//            {
+//                FilterControl(modifier = modifier, synthesizerViewModel = synthesizerViewModel)
+//            }
+//            Row(
+//                modifier = modifier
+//                    .fillMaxWidth()
+//                    .fillMaxHeight(),
+//                horizontalArrangement = Arrangement.Center,
+//                verticalAlignment = Alignment.CenterVertically
+//            )
+            //{
+                PitchControl(modifier, synthesizerViewModel)
+                FilterControl(modifier = modifier, synthesizerViewModel = synthesizerViewModel)
+                PlayControl(modifier, synthesizerViewModel)
+            //}
         }
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
-              .fillMaxWidth()
-              .fillMaxHeight()
+                .fillMaxWidth()
+                .fillMaxHeight()
         ) {
             VolumeControl(modifier, synthesizerViewModel)
         }
@@ -172,6 +192,42 @@ private fun PitchControl(
 }
 
 @Composable
+private fun FilterControl(
+    modifier: Modifier,
+    synthesizerViewModel: WavetableSynthesizerViewModel
+) {
+    // if the frequency changes, recompose this composable
+    val filterFrequency = synthesizerViewModel.filterCutoff.observeAsState()
+    // the slider position state is hoisted by this composable; no need to embed it into
+    // the ViewModel, which ideally, shouldn't be aware of the UI.
+    // When the slider position changes, this composable will be recomposed as we explained in
+    // the UI tutorial.
+    val sliderPosition = rememberSaveable {
+        mutableStateOf(
+            // we use the ViewModel's convenience function to get the initial slider position
+            synthesizerViewModel.sliderPositionFromFrequencyInHz(filterFrequency.value!!)
+        )
+    }
+
+    PitchControlContent(
+        modifier = modifier,
+        pitchControlLabel = "Filter Cutoff",
+        value = sliderPosition.value,
+        // on slider position change, update the slider position and the ViewModel
+        onValueChange = {
+            sliderPosition.value = it
+            synthesizerViewModel.setFrequencySliderPosition(it)
+        },
+        // this range is now [0, 1] because the ViewModel is responsible for calculating the frequency
+        // out of the slider position
+        valueRange = 0F..1F,
+        // this label could be moved into the ViewModel but it doesn't have to be because this
+        // composable will anyway be recomposed on a frequency change
+        frequencyValueLabel = stringResource(R.string.frequency_value, filterFrequency.value!!)
+    )
+}
+
+@Composable
 private fun PitchControlContent(
     modifier: Modifier,
     pitchControlLabel: String,
@@ -225,9 +281,9 @@ private fun VolumeControlContent(
     Icon(imageVector = Icons.Filled.VolumeUp, contentDescription = null)
     Column(
         modifier = modifier
-          .fillMaxWidth()
-          .fillMaxHeight(0.8f)
-          .offset(y = 40.dp),
+            .fillMaxWidth()
+            .fillMaxHeight(0.8f)
+            .offset(y = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     )
@@ -236,8 +292,8 @@ private fun VolumeControlContent(
             value = volume,
             onValueChange = onValueChange,
             modifier = modifier
-              .width(sliderHeight.dp)
-              .rotate(270f),
+                .width(sliderHeight.dp)
+                .rotate(270f),
             valueRange = volumeRange
         )
     }
@@ -251,15 +307,15 @@ private fun WavetableSelectionPanel(
 ) {
     Row(
         modifier = modifier
-          .fillMaxWidth()
-          .fillMaxHeight(0.5f),
+            .fillMaxWidth()
+            .fillMaxHeight(0.5f),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = modifier
-              .fillMaxWidth()
-              .fillMaxHeight(),
+                .fillMaxWidth()
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -318,8 +374,8 @@ fun VolumeControlPreview() {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-          .fillMaxWidth()
-          .fillMaxHeight()
+            .fillMaxWidth()
+            .fillMaxHeight()
     ) {
         VolumeControl(modifier = Modifier, synthesizerViewModel = WavetableSynthesizerViewModel())
     }

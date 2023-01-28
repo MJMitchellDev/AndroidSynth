@@ -44,6 +44,7 @@ namespace wavetablesynthesizer {
             float _penultimateFilteredSample;
             float _prepenultimateSample;
             float _prepenultimateFilteredSample;
+            bool _initialized = false;
 
             std::shared_ptr<AudioSource> _filterSource;
     };

@@ -24,6 +24,13 @@ class WavetableSynthesizerViewModel : ViewModel() {
         }
     private val frequencyRange = 40f..3000f
 
+    private val _filterCutoff = MutableLiveData(300f)
+    val filterCutoff: LiveData<Float>
+        get() {
+            return _filterCutoff
+        }
+    private val filterCutoffRange = 40f..3000f
+
     private val _volume = MutableLiveData(-24f)
     val volume: LiveData<Float>
         get() {
@@ -41,6 +48,17 @@ class WavetableSynthesizerViewModel : ViewModel() {
         _frequency.value = frequencyInHz
         viewModelScope.launch {
             wavetableSynthesizer?.setFrequency(frequencyInHz)
+        }
+    }
+
+    /**
+     * @param frequencySliderPosition slider position in [0, 1] range
+     */
+    fun setFilterCutoffSliderPosition(frequencySliderPosition: Float) {
+        val frequencyInHz = frequencyInHzFromSliderPosition(frequencySliderPosition)
+        _frequency.value = frequencyInHz
+        viewModelScope.launch {
+            wavetableSynthesizer?.setFilterCutoffFrequency(frequencyInHz)
         }
     }
 

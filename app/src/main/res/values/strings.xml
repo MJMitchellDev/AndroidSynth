@@ -9,4 +9,5 @@
     <string name="triangle">Triangle</string>
     <string name="square">Square</string>
     <string name="sawtooth">Sawtooth</string>
+    <string name="filterCutoff">Filter Cutoff</string>
 </resources>
