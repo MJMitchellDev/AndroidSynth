@@ -30,18 +30,4 @@ namespace wavetablesynthesizer {
             std::vector<float> wavetableToSwap;
             std::atomic<bool> wavetableIsBeingSwapped{false};
     };
-
-    class A4Oscillator : public WavetableOscillator {
-        public:
-            explicit A4Oscillator(float sampleRate);
-            float getSample() override;
-            void setFrequency(float frequency) override {};
-            void setAmplitude(float newAmplitude) override {};
-            void onPlaybackStopped() override;
-            void setWavetable(const std::vector<float> &wavetable) override {};
-
-        private:
-            float _phase{0.f};
-            float _phaseIncrement{0.f};
-    };
-}  // namespace com.mjmitchelldev.androidsynth
+}

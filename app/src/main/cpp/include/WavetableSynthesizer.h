@@ -24,6 +24,7 @@ namespace wavetablesynthesizer {
             void setFrequency(float frequencyInHz);
             void setVolume(float volumeInDb);
             void setWavetable(Wavetable wavetable);
+            void setFilterCutoffFrequency(float frequencyInHz);
 
         private:
             std::atomic<bool> _isPlaying{false};
