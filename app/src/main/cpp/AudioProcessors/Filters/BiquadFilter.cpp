@@ -15,6 +15,7 @@ namespace wavetablesynthesizer {
     float BiquadFilter::getSample() {
         if (!_initialized) {
             setCoefficients(8000);
+            _initialized = true;
         }
 
         return filterSample(_filterSource->getSample());
