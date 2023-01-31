@@ -29,16 +29,15 @@ namespace wavetablesynthesizer {
     int32_t OboeAudioPlayer::play() {
         LOGD("OboeAudioPlayer::play()");
         AudioStreamBuilder builder;
-        const auto result =
-                builder.setPerformanceMode(PerformanceMode::LowLatency)
-                        ->setDirection(Direction::Output)
-                        ->setSampleRate(_samplingRate)
-                        ->setDataCallback(this)
-                        ->setSharingMode(SharingMode::Exclusive)
-                        ->setFormat(AudioFormat::Float)
-                        ->setChannelCount(channelCount)
-                        ->setSampleRateConversionQuality(SampleRateConversionQuality::Best)
-                        ->openStream(_stream);
+        const auto result = builder.setPerformanceMode(PerformanceMode::LowLatency)
+            ->setDirection(Direction::Output)
+            ->setSampleRate(_samplingRate)
+            ->setDataCallback(this)
+            ->setSharingMode(SharingMode::Exclusive)
+            ->setFormat(AudioFormat::Float)
+            ->setChannelCount(channelCount)
+            ->setSampleRateConversionQuality(SampleRateConversionQuality::Best)
+            ->openStream(_stream);
 
         if (result != Result::OK) {
             return static_cast<int32_t>(result);

@@ -32,6 +32,7 @@ add_library(
         AudioProcessors/EnvelopeProcessor.cpp
         AudioProcessors/Filters/BiquadFilter.cpp
         AudioProcessors/Filters/ButterworthLowPassFilter.cpp
+        Sequencer.cpp
 )
 
 include_directories(
