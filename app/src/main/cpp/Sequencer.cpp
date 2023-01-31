@@ -26,10 +26,20 @@ namespace mjmitchelldev_androidsynth {
     }
 
     void ChannelSequencer::tickFrame() {
+        _currentFrame += 1;
 
+        auto totalTime = _currentFrame / _sampleRate;
+
+        while (_nextEvent && _nextEvent->GetDeltaFromLastEventInMs() >= totalTime - _lastEventInMs)
+        {
+            processEvent(_nextEvent);
+            _nextEvent = _eventQueue.front();
+            _eventQueue.pop();
+            _lastEventInMs = totalTime;
+        }
     }
 
-    void ChannelSequencer::processEvent(NoteEvent *event) {
+    void ChannelSequencer::processEvent(const std::shared_ptr<NoteEvent>& event) {
         if (event->GetEventType() == Note_On)
         {
             _signalGenerator->SetNote(event->GetNote());
@@ -48,6 +58,12 @@ namespace mjmitchelldev_androidsynth {
 
     void ChannelSequencer::queueEvent(std::shared_ptr<NoteEvent> event) {
         _eventQueue.push(event);
+
+        if (!_nextEvent)
+        {
+            _nextEvent = _eventQueue.front();
+            _eventQueue.pop();
+        }
     }
 
     Note_Event_Type NoteEvent::GetEventType() {
