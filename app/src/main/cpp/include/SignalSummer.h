@@ -4,7 +4,7 @@
 #include <memory>
 #include "AudioSource.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     class SignalSummer : public AudioSource {
         public:
             SignalSummer(std::vector<std::shared_ptr<AudioSource>> soundGenerators);

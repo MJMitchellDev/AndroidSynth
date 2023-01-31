@@ -1,6 +1,6 @@
 #pragma once
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     class AudioPlayer {
         public:
             virtual ~AudioPlayer() = default;

@@ -7,7 +7,7 @@
 #include "SignalSummer.h"
 #include "BiquadFilter.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     class WavetableOscillator;
 
     class AudioPlayer;

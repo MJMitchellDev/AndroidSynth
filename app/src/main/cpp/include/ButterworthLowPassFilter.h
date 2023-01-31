@@ -8,7 +8,7 @@
 #include "BiquadFilter.h"
 #include <math.h>
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     class ButterworthLowPassFilter : public BiquadFilter {
         public:
             ButterworthLowPassFilter(std::shared_ptr<AudioSource> filterSource, int sampleRate)

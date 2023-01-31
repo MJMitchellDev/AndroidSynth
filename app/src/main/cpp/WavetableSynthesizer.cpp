@@ -6,7 +6,7 @@
 #include "EnvelopeProcessor.h"
 #include "ButterworthLowPassFilter.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     float dBToAmplitude(float dB) {
         return std::pow(10.f, dB / 20.f);
     }

@@ -2,7 +2,7 @@
 #include <cmath>
 #include "MathConstants.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
 
     WavetableOscillator::WavetableOscillator(std::vector<float> waveTable,
             float sampleRate)

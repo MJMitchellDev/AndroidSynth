@@ -18,7 +18,7 @@
 #include <memory>
 #include "AudioSource.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
 
     class BiquadFilter : public AudioSource {
         public:

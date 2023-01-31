@@ -6,7 +6,7 @@
 
 #include <utility>
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
 
     EnvelopeProcessor::EnvelopeProcessor(std::shared_ptr<AudioSource> soundGenerator, float sampleRate) {
         _soundGenerator = std::move(soundGenerator);

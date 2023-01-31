@@ -3,7 +3,7 @@
 #include "AudioSource.h"
 #include <memory>
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
 
     enum class EnvelopeState { ATTACK, SUSTAIN, DECAY, RELEASE };
 

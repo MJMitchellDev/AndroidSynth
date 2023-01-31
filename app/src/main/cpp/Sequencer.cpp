@@ -4,7 +4,7 @@
 
 #include "include/Sequencer.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
 
     void ChannelDistributingNoteSequencer::tickFrame() {
         for (const auto& [_, channel] : _channels)

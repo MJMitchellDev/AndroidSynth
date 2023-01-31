@@ -1,6 +1,6 @@
 #pragma once
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     class AudioSource {
         public:
             virtual ~AudioSource() = default;

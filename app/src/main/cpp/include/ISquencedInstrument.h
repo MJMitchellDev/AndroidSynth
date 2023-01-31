@@ -1,6 +1,6 @@
 #include "MusicConsts.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     class ISequencedInstrument {
         public:
             virtual void SetNote(Note note) = 0;
