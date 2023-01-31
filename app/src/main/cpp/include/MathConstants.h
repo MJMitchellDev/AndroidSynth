@@ -1,5 +1,5 @@
 #pragma once
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     static const auto PI = std::atan(1.f) * 4;
 }

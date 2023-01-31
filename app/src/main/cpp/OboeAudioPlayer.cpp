@@ -6,7 +6,7 @@
 
 using namespace oboe;
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
 #ifndef NDEBUG
     static std::atomic<int> instances{0};
 #endif

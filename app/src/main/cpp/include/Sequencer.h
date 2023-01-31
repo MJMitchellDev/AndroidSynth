@@ -8,7 +8,7 @@
 #include <queue>
 #include "ISquencedInstrument.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     enum Note_Event_Type {
         Note_On, Note_Off
     };

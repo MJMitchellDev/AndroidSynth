@@ -1,5 +1,5 @@
 #pragma once
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     enum class Wavetable { SINE, TRIANGLE, SQUARE, SAW };
 }

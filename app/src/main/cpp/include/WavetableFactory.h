@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     enum class Wavetable;
 
     class WavetableFactory {

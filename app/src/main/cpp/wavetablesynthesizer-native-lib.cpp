@@ -9,7 +9,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_create(
         JNIEnv *env,
         jobject obj) {
     auto synthesizer =
-            std::make_unique<wavetablesynthesizer::WavetableSynthesizer>();
+            std::make_unique<mjmitchelldev_androidsynth::WavetableSynthesizer>();
 
     if (not synthesizer) {
         LOGD("Failed to create the synthesizer.");
@@ -25,7 +25,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_delete(
         jobject obj,
         jlong synthesizerHandle) {
     auto *synthesizer =
-            reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+            reinterpret_cast<mjmitchelldev_androidsynth::WavetableSynthesizer *>(
                     synthesizerHandle);
 
     if (not synthesizer) {
@@ -42,7 +42,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_play(
         jobject obj,
         jlong synthesizerHandle) {
     auto *synthesizer =
-            reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+            reinterpret_cast<mjmitchelldev_androidsynth::WavetableSynthesizer *>(
                     synthesizerHandle);
 
     if (synthesizer) {
@@ -60,7 +60,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_stop(
         jobject obj,
         jlong synthesizerHandle) {
     auto *synthesizer =
-            reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+            reinterpret_cast<mjmitchelldev_androidsynth::WavetableSynthesizer *>(
                     synthesizerHandle);
 
     if (synthesizer) {
@@ -78,7 +78,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_isPlaying(
         jobject obj,
         jlong synthesizerHandle) {
     auto *synthesizer =
-            reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+            reinterpret_cast<mjmitchelldev_androidsynth::WavetableSynthesizer *>(
                     synthesizerHandle);
 
     if (not synthesizer) {
@@ -98,7 +98,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setFrequency(
         jlong synthesizerHandle,
         jfloat frequencyInHz) {
     auto *synthesizer =
-            reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+            reinterpret_cast<mjmitchelldev_androidsynth::WavetableSynthesizer *>(
                     synthesizerHandle);
     const auto nativeFrequency = static_cast<float>(frequencyInHz);
 
@@ -114,7 +114,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setFrequency(
 JNIEXPORT void JNICALL
 Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setFilterCutoffFrequency(
     JNIEnv *env, jobject obj, jlong synthesizerHandle, jfloat frequencyInHz) {
-    auto *synthesizer = reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+    auto *synthesizer = reinterpret_cast<mjmitchelldev_androidsynth::WavetableSynthesizer *>(
         synthesizerHandle);
     const auto nativeFrequency = static_cast<float>(frequencyInHz);
 
@@ -134,7 +134,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setVolume(
         jlong synthesizerHandle,
         jfloat volumeInDb) {
     auto *synthesizer =
-            reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+            reinterpret_cast<mjmitchelldev_androidsynth::WavetableSynthesizer *>(
                     synthesizerHandle);
     const auto nativeVolume = static_cast<float>(volumeInDb);
 
@@ -154,9 +154,9 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setWavetable(
         jlong synthesizerHandle,
         jint wavetable) {
     auto *synthesizer =
-            reinterpret_cast<wavetablesynthesizer::WavetableSynthesizer *>(
+            reinterpret_cast<mjmitchelldev_androidsynth::WavetableSynthesizer *>(
                     synthesizerHandle);
-    const auto nativeWavetable = static_cast<wavetablesynthesizer::Wavetable>(wavetable);
+    const auto nativeWavetable = static_cast<mjmitchelldev_androidsynth::Wavetable>(wavetable);
 
     if (synthesizer) {
         synthesizer->setWavetable(nativeWavetable);

@@ -3,7 +3,7 @@
 #include <oboe/Oboe.h>
 #include "AudioPlayer.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     class AudioSource;
 
     class OboeAudioPlayer : public oboe::AudioStreamDataCallback,

@@ -4,7 +4,7 @@
 #include "Wavetable.h"
 #include "MathConstants.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     static constexpr auto WAVETABLE_LENGTH = 256;
 
     std::vector<float> generateSineWaveTable() {

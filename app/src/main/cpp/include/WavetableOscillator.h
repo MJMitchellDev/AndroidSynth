@@ -3,7 +3,7 @@
 #include <vector>
 #include "AudioSource.h"
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
 
     class WavetableOscillator : public AudioSource {
         public:

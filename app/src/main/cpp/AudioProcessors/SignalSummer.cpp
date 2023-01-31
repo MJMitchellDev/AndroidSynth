@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
       SignalSummer::SignalSummer(std::vector<std::shared_ptr<AudioSource>> soundGenerators) {
           _soundGenerators = std::move(soundGenerators);
       }

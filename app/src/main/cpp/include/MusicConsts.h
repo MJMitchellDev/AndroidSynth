@@ -4,7 +4,7 @@
 
 #include <map>
 
-namespace wavetablesynthesizer {
+namespace mjmitchelldev_androidsynth {
     enum Note {
         A0, ASharp0, B0, C0, CSharp0, D0, DSharp0, E0, F0, FSharp0, G0, GSharp0,
         A1, ASharp1, B1, C1, CSharp1, D1, DSharp1, E1, F1, FSharp1, G1, GSharp1,
