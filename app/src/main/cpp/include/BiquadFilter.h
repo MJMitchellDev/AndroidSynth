@@ -24,9 +24,9 @@ namespace mjmitchelldev_androidsynth {
         public:
             BiquadFilter(std::shared_ptr<AudioSource> filterSource, int sampleRate);
 
-            float getSample() override;
-            void onPlaybackStopped() override;
-            virtual void setCoefficients(int frequencyCutoff) = 0;
+            float GetSample() override;
+            void OnPlaybackStopped() override;
+            virtual void SetCoefficients(int frequencyCutoff) = 0;
             void updateFrequencyCutoff(int frequencyCutoff);
             float filterSample(float sample);
 

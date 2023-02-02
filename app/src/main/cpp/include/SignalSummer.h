@@ -8,8 +8,8 @@ namespace mjmitchelldev_androidsynth {
     class SignalSummer : public AudioSource {
         public:
             SignalSummer(std::vector<std::shared_ptr<AudioSource>> soundGenerators);
-            float getSample() override;
-            void onPlaybackStopped() override;
+            float GetSample() override;
+            void OnPlaybackStopped() override;
 
         protected:
             std::vector<std::shared_ptr<AudioSource>> _soundGenerators;

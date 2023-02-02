@@ -6,48 +6,68 @@
 
 namespace mjmitchelldev_androidsynth {
 
-    void ChannelDistributingNoteSequencer::tickFrame() {
+    void ChannelDistributingNoteSequencer::TickFrame() {
         for (const auto& [_, channel] : _channels)
-            channel->tickFrame();
+            channel->TickFrame();
     }
 
-    void ChannelDistributingNoteSequencer::queueEvents(std::vector<std::shared_ptr<NoteEvent>> events) {
+    void ChannelDistributingNoteSequencer::QueueEvents(std::vector<std::shared_ptr<NoteEvent>> events) {
         for (const auto& event : events)
         {
-            queueEvent(event);
+            QueueEvent(event);
         }
     }
 
-    void ChannelDistributingNoteSequencer::queueEvent(std::shared_ptr<NoteEvent> event) {
+    void ChannelDistributingNoteSequencer::QueueEvent(std::shared_ptr<NoteEvent> event) {
         if (_channels.contains(event->GetChannel()))
         {
-            _channels[event->GetChannel()]->queueEvent(event);
+            _channels[event->GetChannel()]->QueueEvent(event);
         }
     }
 
-    void ChannelSequencer::tickFrame() {
+    void ChannelSequencer::TickFrame() {
+        _currentFrame += 1;
 
-    }
+        auto totalTime = _currentFrame / _sampleRate;
 
-    void ChannelSequencer::processEvent(NoteEvent *event) {
-        if (event->GetEventType() == Note_On)
+        while (_nextEvent && _nextEvent->GetDeltaFromLastEventInMs() >= totalTime - _lastEventInMs)
         {
-            _signalGenerator->SetNote(event->GetNote());
-            _signalGenerator->StartPlaying();
-        }
-        else
-        {
-            _signalGenerator->StopPlaying();
+            processEvent(_nextEvent);
+            SetNextEvent();
+            _lastEventInMs = totalTime;
         }
     }
 
-    void ChannelSequencer::queueEvents(std::vector<std::shared_ptr<NoteEvent>> events) {
+    void ChannelSequencer::processEvent(const std::shared_ptr<NoteEvent>& event) {
+        switch (event->GetEventType()) {
+            case Note_On:
+                _signalGenerator->SetNote(event->GetNote());
+                break;
+            case Note_Off:
+                _signalGenerator->ReleaseNote(event->GetNote());
+                break;
+            default:
+                break;
+        }
+    }
+
+    void ChannelSequencer::QueueEvents(std::vector<std::shared_ptr<NoteEvent>> events) {
         for (const auto& event : events)
-            queueEvent(event);
+            QueueEvent(event);
     }
 
-    void ChannelSequencer::queueEvent(std::shared_ptr<NoteEvent> event) {
+    void ChannelSequencer::QueueEvent(std::shared_ptr<NoteEvent> event) {
         _eventQueue.push(event);
+
+        if (!_nextEvent)
+        {
+            SetNextEvent();
+        }
+    }
+
+    void ChannelSequencer::SetNextEvent() {
+        _nextEvent = _eventQueue.front();
+        _eventQueue.pop();
     }
 
     Note_Event_Type NoteEvent::GetEventType() {
@@ -58,7 +78,7 @@ namespace mjmitchelldev_androidsynth {
         return _note;
     }
 
-    u_int64_t NoteEvent::GetDeltaFromLastEventInMs() {
+    int NoteEvent::GetDeltaFromLastEventInMs() {
         return _deltaInMs;
     }
 

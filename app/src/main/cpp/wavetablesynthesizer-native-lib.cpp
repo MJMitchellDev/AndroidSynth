@@ -2,6 +2,7 @@
 #include <memory>
 #include "Log.h"
 #include "WavetableSynthesizer.h"
+#include "OboeAudioPlayer.h"
 
 extern "C" {
 JNIEXPORT jlong JNICALL
@@ -9,7 +10,9 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_create(
         JNIEnv *env,
         jobject obj) {
     auto synthesizer =
-            std::make_unique<mjmitchelldev_androidsynth::WavetableSynthesizer>();
+            std::make_unique<mjmitchelldev_androidsynth::WavetableSynthesizer>(
+                    std::make_unique<mjmitchelldev_androidsynth::OboeAudioPlayer>()
+                    );
 
     if (not synthesizer) {
         LOGD("Failed to create the synthesizer.");
@@ -46,7 +49,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_play(
                     synthesizerHandle);
 
     if (synthesizer) {
-        synthesizer->play();
+        synthesizer->Play();
     } else {
         LOGD(
                 "Synthesizer not created. Please, create the synthesizer first by "
@@ -64,7 +67,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_stop(
                     synthesizerHandle);
 
     if (synthesizer) {
-        synthesizer->stop();
+        synthesizer->Stop();
     } else {
         LOGD(
                 "Synthesizer not created. Please, create the synthesizer first by "
@@ -88,7 +91,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_isPlaying(
         return false;
     }
 
-    return synthesizer->isPlaying();
+    return synthesizer->IsPlaying();
 }
 
 JNIEXPORT void JNICALL
@@ -103,7 +106,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setFrequency(
     const auto nativeFrequency = static_cast<float>(frequencyInHz);
 
     if (synthesizer) {
-        synthesizer->setFrequency(nativeFrequency);
+        synthesizer->SetFrequency(nativeFrequency);
     } else {
         LOGD(
                 "Synthesizer not created. Please, create the synthesizer first by "
@@ -119,7 +122,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setFilterCutoffFr
     const auto nativeFrequency = static_cast<float>(frequencyInHz);
 
     if (synthesizer) {
-        synthesizer->setFilterCutoffFrequency(nativeFrequency);
+        synthesizer->SetFilterCutoffFrequency(nativeFrequency);
     } else {
         LOGD(
             "Synthesizer not created. Please, create the synthesizer first by "
@@ -139,7 +142,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setVolume(
     const auto nativeVolume = static_cast<float>(volumeInDb);
 
     if (synthesizer) {
-        synthesizer->setVolume(nativeVolume);
+        synthesizer->SetVolume(nativeVolume);
     } else {
         LOGD(
                 "Synthesizer not created. Please, create the synthesizer first by "
@@ -159,7 +162,7 @@ Java_com_mjmitchelldev_androidsynth_NativeWavetableSynthesizer_setWavetable(
     const auto nativeWavetable = static_cast<mjmitchelldev_androidsynth::Wavetable>(wavetable);
 
     if (synthesizer) {
-        synthesizer->setWavetable(nativeWavetable);
+        synthesizer->SetWavetable(nativeWavetable);
     } else {
         LOGD(
                 "Synthesizer not created. Please, create the synthesizer first by "

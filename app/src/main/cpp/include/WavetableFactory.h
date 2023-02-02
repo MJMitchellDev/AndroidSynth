@@ -6,11 +6,11 @@ namespace mjmitchelldev_androidsynth {
 
     class WavetableFactory {
         public:
-            std::vector<float> getWaveTable(Wavetable wavetable);
-            std::vector<float> sineWaveTable();
-            std::vector<float> triangleWaveTable();
-            std::vector<float> squareWaveTable();
-            std::vector<float> sawWaveTable();
+            std::vector<float> GetWaveTable(Wavetable wavetable);
+            std::vector<float> SineWaveTable();
+            std::vector<float> TriangleWaveTable();
+            std::vector<float> SquareWaveTable();
+            std::vector<float> SawWaveTable();
 
         private:
             std::vector<float> _sineWaveTable;

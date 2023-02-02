@@ -1,7 +1,7 @@
 #include "WavetableSynthesizer.h"
 #include <cmath>
 #include "Log.h"
-#include "OboeAudioPlayer.h"
+#include "AudioPlayer.h"
 #include "WavetableOscillator.h"
 #include "EnvelopeProcessor.h"
 #include "ButterworthLowPassFilter.h"
@@ -11,10 +11,13 @@ namespace mjmitchelldev_androidsynth {
         return std::pow(10.f, dB / 20.f);
     }
 
-    WavetableSynthesizer::WavetableSynthesizer() {
+    WavetableSynthesizer::WavetableSynthesizer(std::unique_ptr<AudioPlayer> audioPlayer) {
+        auto waveTable = _wavetableFactory.GetWaveTable(_currentWavetable); 
+        auto oscillator1 = std::make_shared<WavetableOscillator>(waveTable, SamplingRate);
+        auto oscillator2 = std::make_shared<WavetableOscillator>(waveTable, SamplingRate);
+
         _oscillators = std::vector<std::shared_ptr<WavetableOscillator>>{
-                std::make_shared<WavetableOscillator>(_wavetableFactory.getWaveTable(_currentWavetable), SamplingRate),
-                std::make_shared<WavetableOscillator>(_wavetableFactory.getWaveTable(_currentWavetable), SamplingRate)
+            oscillator1, oscillator2
         };
 
         auto sources = std::vector<std::shared_ptr<AudioSource>>{
@@ -29,22 +32,22 @@ namespace mjmitchelldev_androidsynth {
                 std::dynamic_pointer_cast<BiquadFilter>(std::make_shared<ButterworthLowPassFilter>(_signalSummer,
                         SamplingRate));
 
-        //_audioPlayer = std::make_unique<OboeAudioPlayer>(_signalSummer, SamplingRate);
-        _audioPlayer = std::make_unique<OboeAudioPlayer>(_globalFilter, SamplingRate);
-
+        _audioPlayer = std::move(audioPlayer);
+        _audioPlayer->SetAudioSource(_globalFilter);
+        _audioPlayer->SetSampleRate(SamplingRate);
     }
 
     WavetableSynthesizer::~WavetableSynthesizer() = default;
 
-    bool WavetableSynthesizer::isPlaying() const {
-        LOGD("isPlaying() called");
+    bool WavetableSynthesizer::IsPlaying() const {
+        LOGD("IsPlaying() called");
         return _isPlaying;
     }
 
-    void WavetableSynthesizer::play() {
-        LOGD("play() called");
+    void WavetableSynthesizer::Play() {
+        LOGD("Play() called");
         std::lock_guard<std::mutex> lock(_mutex);
-        const auto result = _audioPlayer->play();
+        const auto result = _audioPlayer->Play();
         if (result == 0) {
             _isPlaying = true;
         } else {
@@ -52,36 +55,36 @@ namespace mjmitchelldev_androidsynth {
         }
     }
 
-    void WavetableSynthesizer::setFrequency(float frequencyInHz) {
+    void WavetableSynthesizer::SetFrequency(float frequencyInHz) {
         LOGD("Frequency set to %.2f Hz.", frequencyInHz);
-        _oscillators[0]->setFrequency(frequencyInHz);
-        _oscillators[1]->setFrequency(frequencyInHz * 5 / 4);
+        _oscillators[0]->SetFrequency(frequencyInHz);
+        _oscillators[1]->SetFrequency(frequencyInHz * 5 / 4);
     }
 
-    void WavetableSynthesizer::setFilterCutoffFrequency(float frequencyInHz) {
+    void WavetableSynthesizer::SetFilterCutoffFrequency(float frequencyInHz) {
         LOGD("Frequency set to %.2f Hz.", frequencyInHz);
         _globalFilter->updateFrequencyCutoff(frequencyInHz);
     }
 
-    void WavetableSynthesizer::setVolume(float volumeInDb) {
+    void WavetableSynthesizer::SetVolume(float volumeInDb) {
         LOGD("Volume set to %.2f dB.", volumeInDb);
         const auto amplitude = dBToAmplitude(volumeInDb);
-        _oscillators[0]->setAmplitude(amplitude);
-        _oscillators[1]->setAmplitude(amplitude);
+        _oscillators[0]->SetAmplitude(amplitude);
+        _oscillators[1]->SetAmplitude(amplitude);
     }
 
-    void WavetableSynthesizer::setWavetable(Wavetable wavetable) {
+    void WavetableSynthesizer::SetWavetable(Wavetable wavetable) {
         if (_currentWavetable != wavetable) {
             _currentWavetable = wavetable;
-            _oscillators[0]->setWavetable(_wavetableFactory.getWaveTable(wavetable));
-            _oscillators[1]->setWavetable(_wavetableFactory.getWaveTable(wavetable));
+            _oscillators[0]->SetWavetable(_wavetableFactory.GetWaveTable(wavetable));
+            _oscillators[1]->SetWavetable(_wavetableFactory.GetWaveTable(wavetable));
         }
     }
 
-    void WavetableSynthesizer::stop() {
-        LOGD("stop() called");
+    void WavetableSynthesizer::Stop() {
+        LOGD("Stop() called");
         std::lock_guard<std::mutex> lock(_mutex);
-        _audioPlayer->stop();
+        _audioPlayer->Stop();
         _isPlaying = false;
     }
 }

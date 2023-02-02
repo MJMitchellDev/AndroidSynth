@@ -13,13 +13,17 @@ namespace mjmitchelldev_androidsynth {
 
             OboeAudioPlayer(std::shared_ptr<AudioSource> source,
                     int samplingRate);
+            OboeAudioPlayer();
             ~OboeAudioPlayer();
 
-            int32_t play() override;
-            void stop() override;
+            int32_t Play() override;
+            void Stop() override;
             oboe::DataCallbackResult onAudioReady(oboe::AudioStream *audioStream,
                     void *audioData,
                     int32_t framesCount) override;
+
+            void SetSampleRate(float sampleRate) override;
+            void SetAudioSource(std::shared_ptr<AudioSource> audioSource) override;
 
         private:
             std::shared_ptr<AudioSource> _source;
