@@ -1,4 +1,6 @@
-#pragma once
+#ifndef AUDIOSOURCE_H_
+#define AUDIOSOURCE_H_
+
 
 namespace mjmitchelldev_androidsynth {
     class AudioSource {
@@ -8,3 +10,5 @@ namespace mjmitchelldev_androidsynth {
             virtual void OnPlaybackStopped() = 0;
     };
 }
+
+#endif
