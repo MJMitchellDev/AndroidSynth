@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "AudioSource.h"
+#include <atomic>
 
 namespace mjmitchelldev_androidsynth {
 
@@ -10,15 +11,15 @@ namespace mjmitchelldev_androidsynth {
             WavetableOscillator() = default;
             WavetableOscillator(std::vector<float> waveTable, float sampleRate);
 
-            float getSample() override;
-            virtual void setFrequency(float frequency);
-            virtual void setAmplitude(float newAmplitude);
-            void onPlaybackStopped() override;
-            virtual void setWavetable(const std::vector<float> &wavetable);
+            float GetSample() override;
+            virtual void SetFrequency(float frequency);
+            virtual void SetAmplitude(float newAmplitude);
+            void OnPlaybackStopped() override;
+            virtual void SetWavetable(const std::vector<float> &wavetable);
 
         private:
-            float interpolateLinearly() const;
-            void swapWavetableIfNecessary();
+            float InterpolateLinearly() const;
+            void SwapWavetableIfNecessary();
 
             float index = 0.f;
             std::atomic<float> indexIncrement{0.f};

@@ -7,20 +7,20 @@ namespace mjmitchelldev_androidsynth {
           _soundGenerators = std::move(soundGenerators);
       }
 
-    float SignalSummer::getSample() {
+    float SignalSummer::GetSample() {
         auto result = .0f;
 
         for (auto & soundGenerator : _soundGenerators) {
-            result += soundGenerator->getSample();
+            result += soundGenerator->GetSample();
         }
 
         return result;
     }
 
-    void SignalSummer::onPlaybackStopped() {
+    void SignalSummer::OnPlaybackStopped() {
         for (auto & soundGenerator : _soundGenerators)
         {
-            soundGenerator->onPlaybackStopped();
+            soundGenerator->OnPlaybackStopped();
         }
     }
 }

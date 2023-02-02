@@ -8,16 +8,16 @@ namespace mjmitchelldev_androidsynth {
             float sampleRate)
             : waveTable{std::move(waveTable)}, sampleRate{sampleRate} {}
 
-    float WavetableOscillator::getSample() {
-        swapWavetableIfNecessary();
+    float WavetableOscillator::GetSample() {
+        SwapWavetableIfNecessary();
 
         index = std::fmod(index, static_cast<float>(waveTable.size()));
-        const auto sample = interpolateLinearly();
+        const auto sample = InterpolateLinearly();
         index += indexIncrement;
         return amplitude * sample;
     }
 
-    void WavetableOscillator::swapWavetableIfNecessary() {
+    void WavetableOscillator::SwapWavetableIfNecessary() {
         wavetableIsBeingSwapped.store(true, std::memory_order_release);
         if (swapWavetable.load(std::memory_order_acquire)) {
             std::swap(waveTable, wavetableToSwap);
@@ -26,16 +26,16 @@ namespace mjmitchelldev_androidsynth {
         wavetableIsBeingSwapped.store(false, std::memory_order_release);
     }
 
-    void WavetableOscillator::setFrequency(float frequency) {
+    void WavetableOscillator::SetFrequency(float frequency) {
         indexIncrement = frequency * static_cast<float>(waveTable.size()) /
                 static_cast<float>(sampleRate);
     }
 
-    void WavetableOscillator::onPlaybackStopped() {
+    void WavetableOscillator::OnPlaybackStopped() {
         index = 0.f;
     }
 
-    float WavetableOscillator::interpolateLinearly() const {
+    float WavetableOscillator::InterpolateLinearly() const {
         const auto truncatedIndex =
                 static_cast<typename decltype(waveTable)::size_type>(index);
         const auto nextIndex = (truncatedIndex + 1u) % waveTable.size();
@@ -44,11 +44,11 @@ namespace mjmitchelldev_androidsynth {
                 (1.f - nextIndexWeight) * waveTable[truncatedIndex];
     }
 
-    void WavetableOscillator::setAmplitude(float newAmplitude) {
+    void WavetableOscillator::SetAmplitude(float newAmplitude) {
         amplitude.store(newAmplitude);
     }
 
-    void WavetableOscillator::setWavetable(const std::vector<float> &wavetable) {
+    void WavetableOscillator::SetWavetable(const std::vector<float> &wavetable) {
         // Wait for the previous swap to take place if the oscillator is playing
         swapWavetable.store(false, std::memory_order_release);
         while (wavetableIsBeingSwapped.load(std::memory_order_acquire)) {

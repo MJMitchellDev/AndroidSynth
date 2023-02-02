@@ -12,16 +12,16 @@ namespace mjmitchelldev_androidsynth {
         _filterSource = std::move(filterSource);
     };
 
-    float BiquadFilter::getSample() {
+    float BiquadFilter::GetSample() {
         if (!_initialized) {
-            setCoefficients(8000);
+            SetCoefficients(8000);
             _initialized = true;
         }
 
-        return filterSample(_filterSource->getSample());
+        return filterSample(_filterSource->GetSample());
     }
 
-    void BiquadFilter::onPlaybackStopped()  {
+    void BiquadFilter::OnPlaybackStopped()  {
         _penultimateFilteredSample = 0.0;
         _penultimateSample = 0.0;
         _prepenultimateFilteredSample = 0.0;
@@ -30,7 +30,7 @@ namespace mjmitchelldev_androidsynth {
 
     void BiquadFilter::updateFrequencyCutoff(int frequencyCutoff)
     {
-        setCoefficients(frequencyCutoff);
+        SetCoefficients(frequencyCutoff);
         _initialized = true;
     }
 

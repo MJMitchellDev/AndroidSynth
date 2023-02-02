@@ -15,19 +15,19 @@ namespace mjmitchelldev_androidsynth {
         _state = EnvelopeState::ATTACK;
     }
 
-    float EnvelopeProcessor::getSample() {
-        float oscillatorValue = _soundGenerator->getSample();
+    float EnvelopeProcessor::GetSample() {
+        float oscillatorValue = _soundGenerator->GetSample();
         processState();
 
         switch (_state) {
             case EnvelopeState::ATTACK:
-                return oscillatorValue * (_currentFrame / _sampleRate * AttackTimeInSeconds);
+                return oscillatorValue * (_currentFrame / _sampleRate * _attackTimeInSeconds);
 
             case EnvelopeState::DECAY:
-                return oscillatorValue * (1 - (1.0f - SustainGain) * ((_sampleRate - _currentFrame) / _sampleRate * DecayTimeInSeconds));
+                return oscillatorValue * (1 - (1.0f - _sustainGain) * ((_sampleRate - _currentFrame) / _sampleRate * _decayTimeInSeconds));
 
             case EnvelopeState::SUSTAIN:
-                return oscillatorValue * SustainGain;
+                return oscillatorValue * _sustainGain;
 
             default:
                 return oscillatorValue;
@@ -37,8 +37,8 @@ namespace mjmitchelldev_androidsynth {
     void EnvelopeProcessor::processState() {
         //hard code .3s for attack and decay, 1s sustain and no release yet
         auto attackStartFrame = .0f;
-        auto decayStartFrame = _sampleRate * AttackTimeInSeconds;
-        auto sustainStartFrame = decayStartFrame + _sampleRate * DecayTimeInSeconds;
+        auto decayStartFrame = _sampleRate * _attackTimeInSeconds;
+        auto sustainStartFrame = decayStartFrame + _sampleRate * _decayTimeInSeconds;
         auto releaseStartFrame = sustainStartFrame + _sampleRate;
         auto cycleEndFrame = releaseStartFrame;
 
@@ -56,8 +56,15 @@ namespace mjmitchelldev_androidsynth {
         _currentFrame += 1;
     }
 
-    void EnvelopeProcessor::onPlaybackStopped() {
+    void EnvelopeProcessor::OnPlaybackStopped() {
         _state = EnvelopeState::ATTACK;
-        _soundGenerator->onPlaybackStopped();
+        _soundGenerator->OnPlaybackStopped();
+    }
+
+    void EnvelopeProcessor::SetAdsr(float attack, float decay, float sustain, float release) {
+        _attackTimeInSeconds = attack;
+        _decayTimeInSeconds = decay;
+        _sustainTimeInSeconds = sustain;
+        _releaseTimeInSeconds = release;
     }
 }

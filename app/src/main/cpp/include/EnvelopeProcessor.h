@@ -11,17 +11,19 @@ namespace mjmitchelldev_androidsynth {
         public:
             EnvelopeProcessor(std::shared_ptr<AudioSource> soundGenerator,
                 float sampleRate);
-            float getSample() override;
-            void onPlaybackStopped() override;
+            float GetSample() override;
+            void OnPlaybackStopped() override;
 
+            void SetAdsr(float attack, float decay, float sustain, float release);
         protected:
             std::shared_ptr<AudioSource> _soundGenerator;
 
         private:
-            const float SustainGain = 0.9f;
-            const float AttackTimeInSeconds = 1.3f;
-            const float DecayTimeInSeconds = 1.3f;
-            const float SustainTimeInSeconds = 3.0f;
+            float _sustainGain = 0.9f;
+            float _attackTimeInSeconds = 1.3f;
+            float _decayTimeInSeconds = 1.3f;
+            float _sustainTimeInSeconds = 3.0f;
+            float _releaseTimeInSeconds = 0.0f;
 
             float _sampleRate;
             int64_t _currentFrame;

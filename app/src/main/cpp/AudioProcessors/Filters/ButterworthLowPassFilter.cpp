@@ -9,7 +9,7 @@
 //algorithm taken from https://www.st.com/resource/en/application_note/an2874-bqd-filter-design-equations-stmicroelectronics.pdf
 
 namespace mjmitchelldev_androidsynth {
-    void ButterworthLowPassFilter::setCoefficients(int frequencyCutoff) {
+    void ButterworthLowPassFilter::SetCoefficients(int frequencyCutoff) {
         const double pi = M_PI;
         const double qFactor = M_SQRT1_2;
 

@@ -128,7 +128,7 @@ private fun ControlsPanel(
 
 @Composable
 private fun PlayControl(modifier: Modifier, synthesizerViewModel: WavetableSynthesizerViewModel) {
-    // The label of the play button is now an observable state, an instance of State<Int?>.
+    // The label of the Play button is now an observable state, an instance of State<Int?>.
     // State<Int?> is used because the label is the id value of the resource string.
     // Thanks to the fact that the composable observes the label,
     // the composable will be recomposed (redrawn) when the observed state changes.

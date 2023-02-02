@@ -12,7 +12,7 @@ namespace mjmitchelldev_androidsynth {
 
         for (auto i = 0; i < WAVETABLE_LENGTH; ++i) {
             sineWaveTable[i] =
-                    std::sinf(2 * PI * static_cast<float>(i) / WAVETABLE_LENGTH);
+                    sinf(2 * PI * static_cast<float>(i) / WAVETABLE_LENGTH);
         }
 
         return sineWaveTable;
@@ -67,12 +67,12 @@ namespace mjmitchelldev_androidsynth {
         return sawWaveTable;
     }
 
-    std::vector<float> WavetableFactory::getWaveTable(Wavetable wavetable) {
+    std::vector<float> WavetableFactory::GetWaveTable(Wavetable wavetable) {
         switch (wavetable) {
-            case Wavetable::SINE:return sineWaveTable();
-            case Wavetable::TRIANGLE:return triangleWaveTable();
-            case Wavetable::SQUARE:return squareWaveTable();
-            case Wavetable::SAW:return sawWaveTable();
+            case Wavetable::SINE:return SineWaveTable();
+            case Wavetable::TRIANGLE:return TriangleWaveTable();
+            case Wavetable::SQUARE:return SquareWaveTable();
+            case Wavetable::SAW:return SawWaveTable();
             default:return {WAVETABLE_LENGTH, 0.f};
         }
     }
@@ -87,19 +87,19 @@ namespace mjmitchelldev_androidsynth {
         return waveTable;
     }
 
-    std::vector<float> WavetableFactory::sineWaveTable() {
+    std::vector<float> WavetableFactory::SineWaveTable() {
         return generateWaveTableOnce(_sineWaveTable, &generateSineWaveTable);
     }
 
-    std::vector<float> WavetableFactory::triangleWaveTable() {
+    std::vector<float> WavetableFactory::TriangleWaveTable() {
         return generateWaveTableOnce(_triangleWaveTable, &generateTriangleWaveTable);
     }
 
-    std::vector<float> WavetableFactory::squareWaveTable() {
+    std::vector<float> WavetableFactory::SquareWaveTable() {
         return generateWaveTableOnce(_squareWaveTable, &generateSquareWaveTable);
     }
 
-    std::vector<float> WavetableFactory::sawWaveTable() {
+    std::vector<float> WavetableFactory::SawWaveTable() {
         return generateWaveTableOnce(_sawWaveTable, &generateSawWaveTable);
     }
 }  // namespace com.mjmitchelldev.androidsynth

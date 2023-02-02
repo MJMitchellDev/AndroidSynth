@@ -23,11 +23,11 @@ namespace mjmitchelldev_androidsynth {
 #ifndef NDEBUG
         LOGD("OboeAudioPlayer destroyed. Instances count: %d", --instances);
 #endif
-        OboeAudioPlayer::stop();
+        OboeAudioPlayer::Stop();
     }
 
-    int32_t OboeAudioPlayer::play() {
-        LOGD("OboeAudioPlayer::play()");
+    int32_t OboeAudioPlayer::Play() {
+        LOGD("OboeAudioPlayer::Play()");
         AudioStreamBuilder builder;
         const auto result = builder.setPerformanceMode(PerformanceMode::LowLatency)
             ->setDirection(Direction::Output)
@@ -48,15 +48,15 @@ namespace mjmitchelldev_androidsynth {
         return static_cast<int32_t>(playResult);
     }
 
-    void OboeAudioPlayer::stop() {
-        LOGD("OboeAudioPlayer::stop()");
+    void OboeAudioPlayer::Stop() {
+        LOGD("OboeAudioPlayer::Stop()");
 
         if (_stream) {
             _stream->stop();
             _stream->close();
             _stream.reset();
         }
-        _source->onPlaybackStopped();
+        _source->OnPlaybackStopped();
     }
 
     DataCallbackResult OboeAudioPlayer::onAudioReady(oboe::AudioStream *audioStream,
@@ -65,13 +65,25 @@ namespace mjmitchelldev_androidsynth {
         auto *floatData = reinterpret_cast<float *>(audioData);
 
         for (auto frame = 0; frame < framesCount; ++frame) {
-            const auto sample = _source->getSample();
+            const auto sample = _source->GetSample();
             for (auto channel = 0; channel < channelCount; ++channel) {
                 floatData[frame * channelCount + channel] = sample;
             }
         }
 
         return oboe::DataCallbackResult::Continue;
+    }
+
+    void OboeAudioPlayer::SetSampleRate(float sampleRate) {
+        _samplingRate = sampleRate;
+    }
+
+    void OboeAudioPlayer::SetAudioSource(std::shared_ptr<AudioSource> audioSource) {
+        _source = std::move(audioSource);
+    }
+
+    OboeAudioPlayer::OboeAudioPlayer() {
+
     }
 
 }  // namespace com.mjmitchelldev.androidsynth

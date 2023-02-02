@@ -15,6 +15,6 @@ namespace mjmitchelldev_androidsynth {
                 : BiquadFilter(filterSource, sampleRate)
             { }
 
-            void setCoefficients(int frequencyCutoff) override;
+            void SetCoefficients(int frequencyCutoff) override;
     };
 }

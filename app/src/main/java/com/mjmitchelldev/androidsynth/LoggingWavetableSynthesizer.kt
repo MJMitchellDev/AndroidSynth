@@ -7,12 +7,12 @@ class LoggingWavetableSynthesizer : WavetableSynthesizer {
   private var isPlaying = false
 
   override suspend fun play() {
-    Log.d("LoggingWavetableSynthesizer", "play() called.")
+    Log.d("LoggingWavetableSynthesizer", "Play() called.")
     isPlaying = true
   }
 
   override suspend fun stop() {
-    Log.d("LoggingWavetableSynthesizer", "stop() called.")
+    Log.d("LoggingWavetableSynthesizer", "Stop() called.")
     isPlaying = false
   }
 
