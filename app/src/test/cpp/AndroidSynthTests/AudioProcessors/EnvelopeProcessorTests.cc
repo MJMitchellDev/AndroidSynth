@@ -50,7 +50,7 @@ namespace mjmitchelldev_androidsynth {
 
         auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(audioSource, 4.0f);
         
-        //Set the attack to last 1 second, or 4 frames at a sample rate of 4
+        //Set the decay to last 1 second, or 4 frames at a sample rate of 4
         envelopeGenerator->SetAdsr(0.0f, 1.0f, 1.0f, 0.0f);
         envelopeGenerator->SetSustainGain(0.0f);
 
@@ -79,11 +79,11 @@ namespace mjmitchelldev_androidsynth {
 
         auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(audioSource, 4.0f);
         
-        //Set the attack to last 1 second, or 4 frames at a sample rate of 4
+        //Set the sustain to last 1 second, or 4 frames at a sample rate of 4
         envelopeGenerator->SetAdsr(0.0f, 0.0f, 1.0f, 0.0f);
         envelopeGenerator->SetSustainGain(1.0f);
 
-        //expect a liner decay of volume;
+        //expect a constant volume;
         auto sampleValue = envelopeGenerator->GetSample();
         EXPECT_EQ(sampleValue, 1.0f);
 
@@ -93,5 +93,41 @@ namespace mjmitchelldev_androidsynth {
         envelopeGenerator->SetSustainGain(1.5f);
         sampleValue = envelopeGenerator->GetSample();
         EXPECT_EQ(sampleValue, 1.5f);
+    }
+
+        TEST(EnvelopeProcessorTests, EnvelopeProcessor_WhenProcessingSamples_TransitionsFromAttackToDecayToSustain) {
+        auto audioSource = std::make_shared<MockAudioSource>();
+
+        EXPECT_CALL(*audioSource, GetSample())
+            .WillRepeatedly(Return(1.0f));
+
+        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(audioSource, 4.0f);
+        
+        envelopeGenerator->SetAdsr(0.5f, 0.5f, 1.0f, 0.0f);
+        envelopeGenerator->SetSustainGain(0.5f);
+
+        //expect attack for two frames
+        auto sampleValue = envelopeGenerator->GetSample();
+        EXPECT_EQ(sampleValue, 0.0f);
+
+        sampleValue = envelopeGenerator->GetSample();
+        EXPECT_EQ(sampleValue, 0.5f);
+
+        //decay for two frames down to 0.5
+        sampleValue = envelopeGenerator->GetSample();
+        EXPECT_EQ(sampleValue, 1.0f);
+
+        sampleValue = envelopeGenerator->GetSample();
+        EXPECT_EQ(sampleValue, 0.75f);
+
+        //now sustain for 4 frames
+        sampleValue = envelopeGenerator->GetSample();
+        EXPECT_EQ(sampleValue, 0.5f);
+        sampleValue = envelopeGenerator->GetSample();
+        EXPECT_EQ(sampleValue, 0.5f);
+        sampleValue = envelopeGenerator->GetSample();
+        EXPECT_EQ(sampleValue, 0.5f);
+        sampleValue = envelopeGenerator->GetSample();
+        EXPECT_EQ(sampleValue, 0.5f);
     }
 }

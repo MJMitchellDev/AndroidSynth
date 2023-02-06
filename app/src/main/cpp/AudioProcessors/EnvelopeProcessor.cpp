@@ -21,7 +21,7 @@ namespace mjmitchelldev_androidsynth {
 
         switch (_state) {
             case EnvelopeState::ATTACK:
-                oscillatorValue = oscillatorValue * (_currentFrameInCycle / _sampleRate * _attackTimeInSeconds);
+                oscillatorValue = oscillatorValue * (_currentFrameInCycle / (_sampleRate * _attackTimeInSeconds));
                 break;
 
             case EnvelopeState::DECAY:
