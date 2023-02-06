@@ -13,17 +13,18 @@ if (${ENABLE_CPP_TESTS} MATCHES "true")
     enable_testing()
 
     add_executable(
-            test-lib
+            AndroidSynthTestsLib
             ${TEST_SRC_DIR}/AudioProcessors/EnvelopeProcessorTests.cc
+            ${TEST_SRC_DIR}/AudioProcessors/SignalSummerTests.cc
     )
     target_link_libraries(
-            test-lib
+            AndroidSynthTestsLib
             wavetablesynthesizer
             GTest::gtest_main
             gmock
     )
 
     include(GoogleTest)
-    gtest_discover_tests(test-lib)
+    gtest_discover_tests(AndroidSynthTestsLib)
 
 endif () # ENABLE_CPP_TESTS
