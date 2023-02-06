@@ -19,6 +19,13 @@
 #include "AudioSource.h"
 
 namespace mjmitchelldev_androidsynth {
+    struct BiquadFilterCoefficients {
+        float a1;
+        float a2;
+        float b0;
+        float b1;
+        float b2;
+    };
 
     class BiquadFilter : public AudioSource {
         public:
@@ -26,11 +33,15 @@ namespace mjmitchelldev_androidsynth {
 
             float GetSample() override;
             void OnPlaybackStopped() override;
-            virtual void SetCoefficients(int frequencyCutoff) = 0;
+
+            std::unique_ptr<BiquadFilterCoefficients> GetCoefficients();
+
             void updateFrequencyCutoff(int frequencyCutoff);
             float filterSample(float sample);
 
         protected:
+            virtual void SetCoefficients(int frequencyCutoff) = 0;
+
             float _b0 = 0.0;
             float _b1 = 0.0;
             float _b2 = 0.0;

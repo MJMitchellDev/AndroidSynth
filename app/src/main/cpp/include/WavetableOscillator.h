@@ -21,7 +21,7 @@ namespace mjmitchelldev_androidsynth {
             float InterpolateLinearly() const;
             void SwapWavetableIfNecessary();
 
-            float index = 0.f;
+            float _index = 0.f;
             std::atomic<float> indexIncrement{0.f};
             std::vector<float> waveTable;
             float sampleRate;

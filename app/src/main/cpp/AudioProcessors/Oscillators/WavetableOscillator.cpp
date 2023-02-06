@@ -11,9 +11,9 @@ namespace mjmitchelldev_androidsynth {
     float WavetableOscillator::GetSample() {
         SwapWavetableIfNecessary();
 
-        index = std::fmod(index, static_cast<float>(waveTable.size()));
+        _index = std::fmod(_index, static_cast<float>(waveTable.size()));
         const auto sample = InterpolateLinearly();
-        index += indexIncrement;
+        _index += indexIncrement;
         return amplitude * sample;
     }
 
@@ -32,14 +32,14 @@ namespace mjmitchelldev_androidsynth {
     }
 
     void WavetableOscillator::OnPlaybackStopped() {
-        index = 0.f;
+        _index = 0.f;
     }
 
     float WavetableOscillator::InterpolateLinearly() const {
         const auto truncatedIndex =
-                static_cast<typename decltype(waveTable)::size_type>(index);
+                static_cast<typename decltype(waveTable)::size_type>(_index);
         const auto nextIndex = (truncatedIndex + 1u) % waveTable.size();
-        const auto nextIndexWeight = index - static_cast<float>(truncatedIndex);
+        const auto nextIndexWeight = _index - static_cast<float>(truncatedIndex);
         return waveTable[nextIndex] * nextIndexWeight +
                 (1.f - nextIndexWeight) * waveTable[truncatedIndex];
     }

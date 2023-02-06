@@ -11,7 +11,7 @@ namespace mjmitchelldev_androidsynth {
     EnvelopeProcessor::EnvelopeProcessor(std::shared_ptr<AudioSource> soundGenerator, float sampleRate) {
         _soundGenerator = std::move(soundGenerator);
         _sampleRate = sampleRate;
-        _currentFrame = 0;
+        _currentFrameInCycle = 0;
         _state = EnvelopeState::ATTACK;
     }
 
@@ -21,17 +21,48 @@ namespace mjmitchelldev_androidsynth {
 
         switch (_state) {
             case EnvelopeState::ATTACK:
-                return oscillatorValue * (_currentFrame / _sampleRate * _attackTimeInSeconds);
+                oscillatorValue = oscillatorValue * (_currentFrameInCycle / (_sampleRate * _attackTimeInSeconds));
+                break;
 
             case EnvelopeState::DECAY:
-                return oscillatorValue * (1 - (1.0f - _sustainGain) * ((_sampleRate - _currentFrame) / _sampleRate * _decayTimeInSeconds));
+                oscillatorValue = GetDecayValue(oscillatorValue);
+                break;
 
             case EnvelopeState::SUSTAIN:
-                return oscillatorValue * _sustainGain;
+                oscillatorValue = oscillatorValue * _sustainGain;
+                break;
 
             default:
-                return oscillatorValue;
+                break;
         }
+
+        _currentFrameInCycle += 1;
+        return oscillatorValue;
+    }
+
+        void EnvelopeProcessor::OnPlaybackStopped() {
+        _state = EnvelopeState::ATTACK;
+        _soundGenerator->OnPlaybackStopped();
+    }
+
+    void EnvelopeProcessor::SetAdsr(float attack, float decay, float sustain, float release) {
+        _attackTimeInSeconds = attack;
+        _decayTimeInSeconds = decay;
+        _sustainTimeInSeconds = sustain;
+        _releaseTimeInSeconds = release;
+    }
+
+    void EnvelopeProcessor::SetSustainGain(float sustainGain) {
+        _sustainGain = sustainGain;
+    }
+
+    float EnvelopeProcessor::GetDecayValue(float sample) {
+        auto decayDelta = _attackPeakGain - _sustainGain;
+        auto decaySteps = _decayTimeInSeconds * _sampleRate;
+        auto currentDecayCycleFrame = _currentFrameInCycle - (_sampleRate * _attackTimeInSeconds);
+    
+        auto decayGain = _attackPeakGain - (currentDecayCycleFrame * (decayDelta / decaySteps));
+        return sample * decayGain;
     }
 
     void EnvelopeProcessor::processState() {
@@ -42,29 +73,15 @@ namespace mjmitchelldev_androidsynth {
         auto releaseStartFrame = sustainStartFrame + _sampleRate;
         auto cycleEndFrame = releaseStartFrame;
 
-        if (_currentFrame < decayStartFrame) {
+        if (_currentFrameInCycle >= attackStartFrame && _currentFrameInCycle < decayStartFrame) {
             _state = EnvelopeState::ATTACK;
-        } else if (_currentFrame < sustainStartFrame) {
+        } else if (_currentFrameInCycle >= decayStartFrame && _currentFrameInCycle < sustainStartFrame) {
             _state = EnvelopeState::DECAY;
-        } else if (_currentFrame < cycleEndFrame) {
+        } else if (_currentFrameInCycle >= sustainStartFrame && _currentFrameInCycle < cycleEndFrame) {
             _state = EnvelopeState::SUSTAIN;
-        } else if (_currentFrame >= cycleEndFrame) {
-            _currentFrame = 0;
+        } else if (_currentFrameInCycle >= cycleEndFrame) {
+            _currentFrameInCycle = 0;
             _state = EnvelopeState::ATTACK;
         }
-
-        _currentFrame += 1;
-    }
-
-    void EnvelopeProcessor::OnPlaybackStopped() {
-        _state = EnvelopeState::ATTACK;
-        _soundGenerator->OnPlaybackStopped();
-    }
-
-    void EnvelopeProcessor::SetAdsr(float attack, float decay, float sustain, float release) {
-        _attackTimeInSeconds = attack;
-        _decayTimeInSeconds = decay;
-        _sustainTimeInSeconds = sustain;
-        _releaseTimeInSeconds = release;
     }
 }
