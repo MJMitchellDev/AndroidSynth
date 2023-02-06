@@ -3,8 +3,6 @@
 
 #include <WavetableOscillator.h>
 
-using ::testing::Return;
-
 namespace mjmitchelldev_androidsynth {
 
     TEST(WavetableOscillatorTests, WavetableOscillator_AtFrequencyOne_ReturnsWavetableSequentially) {

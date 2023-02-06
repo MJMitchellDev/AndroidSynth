@@ -11,7 +11,8 @@
 namespace mjmitchelldev_androidsynth {
     void ButterworthLowPassFilter::SetCoefficients(int frequencyCutoff) {
         const double pi = M_PI;
-        const double qFactor = M_SQRT1_2;
+        //const double qFactor = M_SQRT1_2;
+        const double qFactor = 0.707;
 
         auto normalisedCutoff = 2 * pi * (static_cast<double>(frequencyCutoff) / _sampleRate);
         auto cutoffTangent = tan(normalisedCutoff / 2);
