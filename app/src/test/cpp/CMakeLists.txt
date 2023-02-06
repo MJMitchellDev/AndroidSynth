@@ -21,7 +21,7 @@ if (${ENABLE_CPP_TESTS} MATCHES "true")
     )
     target_link_libraries(
             AndroidSynthTestsLib
-            wavetablesynthesizer
+            androidsynth
             GTest::gtest_main
             gmock
     )

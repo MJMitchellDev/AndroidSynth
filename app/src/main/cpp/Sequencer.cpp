@@ -1,7 +1,3 @@
-//
-// Created by lazza on 29/01/2023.
-//
-
 #include "include/Sequencer.h"
 
 namespace mjmitchelldev_androidsynth {

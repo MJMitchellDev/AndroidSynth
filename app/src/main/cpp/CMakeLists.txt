@@ -5,7 +5,7 @@
 # Sets the minimum version of CMake required to build the native library.
 
 cmake_minimum_required(VERSION 3.18.1)
-project("wavetablesynthesizer")
+project("androidsynth")
 
 if (${ENABLE_CPP_TESTS} MATCHES "true")
         # GoogleTest requires at least C++14
@@ -22,7 +22,7 @@ endif ()
 if (${ENABLE_CPP_TESTS} MATCHES "true")
         add_library(
                 # Sets the name of the library.
-                wavetablesynthesizer
+                androidsynth
 
                 # Sets the library as a shared library.
                 SHARED
@@ -45,7 +45,7 @@ if (${ENABLE_CPP_TESTS} MATCHES "true")
 else()
         add_library(
                 # Sets the name of the library.
-                wavetablesynthesizer
+                androidsynth
 
                 # Sets the library as a shared library.
                 SHARED
@@ -106,7 +106,7 @@ else()
         find_package(oboe REQUIRED CONFIG)
 
         target_link_libraries( # Specifies the target library.
-                        wavetablesynthesizer
+                        androidsynth
                         # Links the target library to the log library
                         # included in the NDK.
                         ${log-lib}
