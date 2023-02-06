@@ -16,6 +16,7 @@ if (${ENABLE_CPP_TESTS} MATCHES "true")
             AndroidSynthTestsLib
             ${TEST_SRC_DIR}/AudioProcessors/EnvelopeProcessorTests.cc
             ${TEST_SRC_DIR}/AudioProcessors/SignalSummerTests.cc
+            ${TEST_SRC_DIR}/AudioProcessors/Oscillators/WavetableOscillatorTests.cc
     )
     target_link_libraries(
             AndroidSynthTestsLib

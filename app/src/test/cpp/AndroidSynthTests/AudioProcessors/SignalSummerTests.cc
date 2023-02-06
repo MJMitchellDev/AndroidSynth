@@ -13,7 +13,7 @@ namespace mjmitchelldev_androidsynth {
             MOCK_METHOD(void, OnPlaybackStopped, (), (override) );
     };
 
-    TEST(EnvelopeProcessorTests, SignalSummer_WithTwoSources_AddsWithEqualWeight) {
+    TEST(SignalSummerTests, SignalSummer_WithTwoSources_AddsWithEqualWeight) {
         auto audioSource = std::make_shared<MockAudioSource>();
         auto audioSource2 = std::make_shared<MockAudioSource>();
 
