@@ -40,6 +40,22 @@ namespace mjmitchelldev_androidsynth {
         return oscillatorValue;
     }
 
+        void EnvelopeProcessor::OnPlaybackStopped() {
+        _state = EnvelopeState::ATTACK;
+        _soundGenerator->OnPlaybackStopped();
+    }
+
+    void EnvelopeProcessor::SetAdsr(float attack, float decay, float sustain, float release) {
+        _attackTimeInSeconds = attack;
+        _decayTimeInSeconds = decay;
+        _sustainTimeInSeconds = sustain;
+        _releaseTimeInSeconds = release;
+    }
+
+    void EnvelopeProcessor::SetSustainGain(float sustainGain) {
+        _sustainGain = sustainGain;
+    }
+
     float EnvelopeProcessor::GetDecayValue(float sample) {
         auto decayDelta = _attackPeakGain - _sustainGain;
         auto decaySteps = _decayTimeInSeconds * _sampleRate;
@@ -67,21 +83,5 @@ namespace mjmitchelldev_androidsynth {
             _currentFrameInCycle = 0;
             _state = EnvelopeState::ATTACK;
         }
-    }
-
-    void EnvelopeProcessor::OnPlaybackStopped() {
-        _state = EnvelopeState::ATTACK;
-        _soundGenerator->OnPlaybackStopped();
-    }
-
-    void EnvelopeProcessor::SetAdsr(float attack, float decay, float sustain, float release) {
-        _attackTimeInSeconds = attack;
-        _decayTimeInSeconds = decay;
-        _sustainTimeInSeconds = sustain;
-        _releaseTimeInSeconds = release;
-    }
-
-    void EnvelopeProcessor::SetSustainGain(float sustainGain) {
-        _sustainGain = sustainGain;
     }
 }
