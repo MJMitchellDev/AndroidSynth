@@ -89,13 +89,16 @@ else()
 
         find_package(oboe REQUIRED CONFIG)
 
+
         target_link_libraries( # Specifies the target library.
-                        androidsynththirdpartydependencies
-                        androidsynth
-                        # Links the target library to the log library
-                        # included in the NDK.
-                        ${log-lib}
-                        oboe::oboe
-                )
+                androidsynththirdpartydependencies
+                oboe::oboe)
+
+        target_link_libraries( # Specifies the target library.
+                androidsynth
+                androidsynththirdpartydependencies
+                # Links the target library to the log library
+                # included in the NDK.
+                ${log-lib})
 endif()
 
