@@ -1,6 +1,7 @@
 #ifndef ANDROIDSYNTH_INOTESEQUENCER_H
 #define ANDROIDSYNTH_INOTESEQUENCER_H
 
+#include <vector>
 #include <memory>
 #include "NoteEvent.h"
 

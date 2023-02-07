@@ -2,9 +2,6 @@
 #define ANDROIDSYNTH_CDNS_H
 
 #include "INoteSequencer.h"
-#include <vector>
-#include <memory>
-#include <queue>
 
 namespace mjmitchelldev_androidsynth {
     class ChannelDistributingNoteSequencer : public INoteSequencer {

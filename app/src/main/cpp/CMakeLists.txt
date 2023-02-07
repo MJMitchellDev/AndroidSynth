@@ -19,49 +19,35 @@ endif ()
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
-if (${ENABLE_CPP_TESTS} MATCHES "true")
+add_library(
+        # Sets the name of the library.
+        androidsynth
+
+        # Sets the library as a shared library.
+        SHARED
+
+        # Provides a relative path to your source file(s).
+        WavetableSynthesizer.cpp
+        AudioProcessors/Oscillators/WavetableOscillator.cpp
+        WavetableFactory.cpp
+
+        AudioProcessors/SignalSummer.cpp
+        AudioProcessors/EnvelopeProcessor.cpp
+        AudioProcessors/Filters/BiquadFilter.cpp
+        AudioProcessors/Filters/ButterworthLowPassFilter.cpp
+        Sequencers/ChannelSequencer.cpp
+        Sequencers/ChannelDistributingNoteSequencer.cpp
+        Events/NoteEvent.cpp
+)
+
+include_directories(
+        include
+)
+
+if (NOT (${ENABLE_CPP_TESTS} MATCHES "true"))
         add_library(
                 # Sets the name of the library.
-                androidsynth
-
-                # Sets the library as a shared library.
-                SHARED
-
-                # Provides a relative path to your source file(s).
-                WavetableSynthesizer.cpp
-                AudioProcessors/Oscillators/WavetableOscillator.cpp
-                WavetableFactory.cpp
-
-                AudioProcessors/SignalSummer.cpp
-                AudioProcessors/EnvelopeProcessor.cpp
-                AudioProcessors/Filters/BiquadFilter.cpp
-                AudioProcessors/Filters/ButterworthLowPassFilter.cpp
-                ChannelSequencer.cpp
-        )
-
-        include_directories(
-                include
-        )
-else()
-        add_library(
-                # Sets the name of the library.
-                androidsynth
-
-                # Sets the library as a shared library.
-                SHARED
-
-                # Provides a relative path to your source file(s).
-                WavetableSynthesizer.cpp
-                AudioProcessors/Oscillators/WavetableOscillator.cpp
-                WavetableFactory.cpp
-
-                AudioProcessors/SignalSummer.cpp
-                AudioProcessors/EnvelopeProcessor.cpp
-                AudioProcessors/Filters/BiquadFilter.cpp
-                AudioProcessors/Filters/ButterworthLowPassFilter.cpp
-                Sequencers/ChannelSequencer.cpp
-                Sequencers/ChannelDistributingNoteSequencer.cpp
-                Events/NoteEvent.cpp
+                androidsynththirdpartydependencies
 
                 #Place libraries not testable on a local machine here, i.e. android specific
                 #files
@@ -82,10 +68,6 @@ endif()
 # default, you only need to specify the name of the public NDK library
 # you want to add. CMake verifies that the library exists before
 # completing its build.
-
-#if (NOT ${ENABLE_CPP_TESTS} MATCHES "true")
-#
-#endif()
 
 find_library(cmath cmath)
 
@@ -108,6 +90,7 @@ else()
         find_package(oboe REQUIRED CONFIG)
 
         target_link_libraries( # Specifies the target library.
+                        androidsynththirdpartydependencies
                         androidsynth
                         # Links the target library to the log library
                         # included in the NDK.
