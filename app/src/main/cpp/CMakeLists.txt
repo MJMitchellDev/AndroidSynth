@@ -36,7 +36,7 @@ if (${ENABLE_CPP_TESTS} MATCHES "true")
                 AudioProcessors/EnvelopeProcessor.cpp
                 AudioProcessors/Filters/BiquadFilter.cpp
                 AudioProcessors/Filters/ButterworthLowPassFilter.cpp
-                Sequencer.cpp
+                ChannelSequencer.cpp
         )
 
         include_directories(
@@ -59,7 +59,9 @@ else()
                 AudioProcessors/EnvelopeProcessor.cpp
                 AudioProcessors/Filters/BiquadFilter.cpp
                 AudioProcessors/Filters/ButterworthLowPassFilter.cpp
-                Sequencer.cpp
+                Sequencers/ChannelSequencer.cpp
+                Sequencers/ChannelDistributingNoteSequencer.cpp
+                Events/NoteEvent.cpp
 
                 #Place libraries not testable on a local machine here, i.e. android specific
                 #files
