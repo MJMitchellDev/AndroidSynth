@@ -13,12 +13,12 @@ namespace mjmitchelldev_androidsynth {
     };
 
     TEST(FilterTests, ButterworthLowPass_ReturnsCorrectCoefficients) {
-        auto audioSource = std::make_shared<MockAudioSource>();
+        auto audioSource = std::make_unique<MockAudioSource>();
 
         EXPECT_CALL(*audioSource, GetSample())
             .WillRepeatedly(Return(1.0f));
 
-        auto filter = std::make_unique<ButterworthLowPassFilter>(audioSource, 100.0f);
+        auto filter = std::make_unique<ButterworthLowPassFilter>(std::move(audioSource), 100.0f);
         filter->updateFrequencyCutoff(20);
         auto coefficients = filter->GetCoefficients();
 
@@ -43,12 +43,12 @@ namespace mjmitchelldev_androidsynth {
     }
 
     TEST(FilterTests, ButterworthLowPass_AppliesBiquadFormulaCorrectly) {
-        auto audioSource = std::make_shared<MockAudioSource>();
+        auto audioSource = std::make_unique<MockAudioSource>();
 
         EXPECT_CALL(*audioSource, GetSample())
             .WillRepeatedly(Return(1.0f));
 
-        auto filter = std::make_unique<ButterworthLowPassFilter>(audioSource, 100.0f);
+        auto filter = std::make_unique<ButterworthLowPassFilter>(std::move(audioSource), 100.0f);
         filter->updateFrequencyCutoff(20);
         auto coefficients = filter->GetCoefficients();
 

@@ -29,7 +29,7 @@ namespace mjmitchelldev_androidsynth {
 
     class BiquadFilter : public AudioSource {
         public:
-            BiquadFilter(std::shared_ptr<AudioSource> filterSource, int sampleRate);
+            BiquadFilter(std::unique_ptr<AudioSource> filterSource, int sampleRate);
 
             float GetSample() override;
             void OnPlaybackStopped() override;
@@ -57,6 +57,6 @@ namespace mjmitchelldev_androidsynth {
             float _prepenultimateFilteredSample;
             bool _initialized = false;
 
-            std::shared_ptr<AudioSource> _filterSource;
+            std::unique_ptr<AudioSource> _filterSource;
     };
 }

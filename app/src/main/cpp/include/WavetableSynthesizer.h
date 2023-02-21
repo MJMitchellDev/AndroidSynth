@@ -33,8 +33,8 @@ namespace mjmitchelldev_androidsynth {
             WavetableFactory _wavetableFactory;
             Wavetable _currentWavetable{Wavetable::SINE};
             std::vector<std::shared_ptr<WavetableOscillator>> _oscillators;
-            std::shared_ptr<SignalSummer> _signalSummer;
+            std::unique_ptr<SignalSummer> _signalSummer;
             std::unique_ptr<AudioPlayer> _audioPlayer;
-            std::shared_ptr<BiquadFilter> _globalFilter;
+            std::unique_ptr<BiquadFilter> _globalFilter;
     };
 }

@@ -21,19 +21,15 @@ namespace mjmitchelldev_androidsynth {
         };
 
         auto sources = std::vector<std::shared_ptr<AudioSource>>{
-                std::dynamic_pointer_cast<AudioSource>(std::make_shared<EnvelopeProcessor>(_oscillators[0],
-                        SamplingRate)),
-                std::dynamic_pointer_cast<AudioSource>(std::make_shared<EnvelopeProcessor>(_oscillators[1],
-                        SamplingRate))
+                std::make_unique<EnvelopeProcessor>(_oscillators[0], SamplingRate),
+                std::make_unique<EnvelopeProcessor>(_oscillators[1], SamplingRate)
         };
 
-        _signalSummer = std::make_shared<SignalSummer>(sources);
-        _globalFilter =
-                std::dynamic_pointer_cast<BiquadFilter>(std::make_shared<ButterworthLowPassFilter>(_signalSummer,
-                        SamplingRate));
+        _signalSummer = std::make_unique<SignalSummer>(sources);
+        _globalFilter = std::make_unique<ButterworthLowPassFilter>(std::move(_signalSummer), SamplingRate);
 
         _audioPlayer = std::move(audioPlayer);
-        _audioPlayer->SetAudioSource(_globalFilter);
+        _audioPlayer->SetAudioSource(std::move(_globalFilter));
         _audioPlayer->SetSampleRate(SamplingRate);
     }
 
