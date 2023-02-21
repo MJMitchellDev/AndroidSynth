@@ -1,6 +1,4 @@
-//
-// Created by lazza on 30/01/2023.
-//
+#pragma once
 
 #include <map>
 

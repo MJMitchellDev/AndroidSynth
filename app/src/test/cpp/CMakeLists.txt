@@ -18,10 +18,11 @@ if (${ENABLE_CPP_TESTS} MATCHES "true")
             ${TEST_SRC_DIR}/AudioProcessors/SignalSummerTests.cc
             ${TEST_SRC_DIR}/AudioProcessors/Oscillators/WavetableOscillatorTests.cc
             ${TEST_SRC_DIR}/AudioProcessors/Filters/ButterworthLowpassFilterTests.cc
+            ${TEST_SRC_DIR}/Sequencers/ChannelSequencerTests.cc
     )
     target_link_libraries(
             AndroidSynthTestsLib
-            wavetablesynthesizer
+            androidsynth
             GTest::gtest_main
             gmock
     )
