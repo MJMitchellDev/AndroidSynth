@@ -9,20 +9,21 @@
 namespace mjmitchelldev_androidsynth {
     class ChannelSequencer : public INoteSequencer {
         public:
-            void TickFrame() override;
+            ChannelSequencer(std::unique_ptr<ISequencedInstrument> instrument, float sampleRate);
 
+            void TickFrame() override;
+            void QueueEvent(std::unique_ptr<NoteEvent> event) override;
+            void QueueEvents(std::vector<std::unique_ptr<NoteEvent>> events) override;
         private:
-            void processEvent(const std::shared_ptr<NoteEvent>& event);
-            void QueueEvent(std::shared_ptr<NoteEvent> event) override;
-            void QueueEvents(std::vector<std::shared_ptr<NoteEvent>> events) override;
+            void processEvent(std::unique_ptr<NoteEvent> const &event);
             void SetNextEvent();
 
-            std::shared_ptr<ISequencedInstrument> _signalGenerator;
-            std::queue<std::shared_ptr<NoteEvent>> _eventQueue;
+            std::unique_ptr<ISequencedInstrument> _signalGenerator;
+            std::queue<std::unique_ptr<NoteEvent>> _eventQueue;
             float _lastEventInMs;
             int _currentFrame;
 
-            std::shared_ptr<NoteEvent> _nextEvent;
+            std::unique_ptr<NoteEvent> _nextEvent;
             float _sampleRate;
     };
 }

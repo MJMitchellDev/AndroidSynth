@@ -8,9 +8,11 @@
 namespace mjmitchelldev_androidsynth {
     class INoteSequencer {
         public:
+            virtual ~INoteSequencer() = default;
+
             virtual void TickFrame() = 0;
-            virtual void QueueEvent(std::shared_ptr<NoteEvent> event) = 0;
-            virtual void QueueEvents(std::vector<std::shared_ptr<NoteEvent>> events) = 0;
+            virtual void QueueEvent(std::unique_ptr<NoteEvent> event) = 0;
+            virtual void QueueEvents(std::vector<std::unique_ptr<NoteEvent>> events) = 0;
     };
 }
 

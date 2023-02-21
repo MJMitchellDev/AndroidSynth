@@ -7,15 +7,17 @@ namespace mjmitchelldev_androidsynth {
             channel->TickFrame();
     }
 
-    void ChannelDistributingNoteSequencer::QueueEvents(std::vector <std::shared_ptr<NoteEvent>> events) {
-        for (const auto &event: events) {
-            QueueEvent(event);
+    void ChannelDistributingNoteSequencer::QueueEvents(std::vector<std::unique_ptr<NoteEvent>> events) {
+        for (auto & event : events)
+        {
+            QueueEvent(std::move(event));
         }
     }
 
-    void ChannelDistributingNoteSequencer::QueueEvent(std::shared_ptr <NoteEvent> event) {
+    void ChannelDistributingNoteSequencer::QueueEvent(std::unique_ptr<NoteEvent> event)  {
         if (_channels.contains(event->GetChannel())) {
-            _channels[event->GetChannel()]->QueueEvent(event);
+            auto channel = event->GetChannel();
+            _channels[channel]->QueueEvent(std::move(event));
         }
     }
 }
