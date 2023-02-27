@@ -1,15 +1,15 @@
 #pragma once
 
 #include <memory>
-#include "AudioSource.h"
+#include "IAudioSource.h"
 
 namespace mjmitchelldev_androidsynth {
-    class AudioPlayer {
+    class IAudioPlayer {
         public:
-            virtual ~AudioPlayer() = default;
+            virtual ~IAudioPlayer() = default;
             virtual int32_t Play() = 0;
             virtual void Stop() = 0;
             virtual void SetSampleRate(float sampleRate) = 0;
-            virtual void SetAudioSource(std::shared_ptr<AudioSource> audioSource) = 0;
+            virtual void SetAudioSource(std::shared_ptr<IAudioSource> audioSource) = 0;
     };
 }

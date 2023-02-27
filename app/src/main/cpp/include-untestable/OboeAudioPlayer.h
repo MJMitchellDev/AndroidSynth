@@ -1,17 +1,17 @@
 #pragma once
 
 #include <oboe/Oboe.h>
-#include "AudioPlayer.h"
+#include "IAudioPlayer.h"
 
 namespace mjmitchelldev_androidsynth {
-    class AudioSource;
+    class IAudioSource;
 
     class OboeAudioPlayer : public oboe::AudioStreamDataCallback,
-                            public AudioPlayer {
+                            public IAudioPlayer {
         public:
             static constexpr auto channelCount = oboe::ChannelCount::Mono;
 
-            OboeAudioPlayer(std::shared_ptr<AudioSource> source,
+            OboeAudioPlayer(std::shared_ptr<IAudioSource> source,
                     int samplingRate);
             OboeAudioPlayer();
             ~OboeAudioPlayer();
@@ -23,10 +23,10 @@ namespace mjmitchelldev_androidsynth {
                     int32_t framesCount) override;
 
             void SetSampleRate(float sampleRate) override;
-            void SetAudioSource(std::shared_ptr<AudioSource> audioSource) override;
+            void SetAudioSource(std::shared_ptr<IAudioSource> audioSource) override;
 
         private:
-            std::shared_ptr<AudioSource> _source;
+            std::shared_ptr<IAudioSource> _source;
             std::shared_ptr<oboe::AudioStream> _stream;
             int _samplingRate;
     };

@@ -11,7 +11,7 @@
 namespace mjmitchelldev_androidsynth {
     class ButterworthLowPassFilter : public BiquadFilter {
         public:
-            ButterworthLowPassFilter(std::unique_ptr<AudioSource> filterSource, int sampleRate)
+            ButterworthLowPassFilter(std::unique_ptr<IAudioSource> filterSource, int sampleRate)
                 : BiquadFilter(std::move(filterSource), sampleRate)
             { }
 

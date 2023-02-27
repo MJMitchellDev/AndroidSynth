@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace mjmitchelldev_androidsynth {
-      SignalSummer::SignalSummer(std::vector<std::shared_ptr<AudioSource>> soundGenerators) {
+      SignalSummer::SignalSummer(std::vector<std::unique_ptr<IAudioSource>> soundGenerators) {
           _soundGenerators = std::move(soundGenerators);
       }
 

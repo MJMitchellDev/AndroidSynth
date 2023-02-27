@@ -1,15 +1,15 @@
 #pragma once
 
-#include "AudioSource.h"
+#include "IAudioSource.h"
 #include <memory>
 
 namespace mjmitchelldev_androidsynth {
 
     enum class EnvelopeState { ATTACK, SUSTAIN, DECAY, RELEASE };
 
-    class EnvelopeProcessor : public AudioSource {
+    class EnvelopeProcessor : public IAudioSource {
         public:
-            EnvelopeProcessor(std::shared_ptr<AudioSource> soundGenerator,
+            EnvelopeProcessor(IAudioSource & soundGenerator,
                 float sampleRate);
             float GetSample() override;
             void OnPlaybackStopped() override;
@@ -17,7 +17,7 @@ namespace mjmitchelldev_androidsynth {
             void SetAdsr(float attack, float decay, float sustain, float release);
             void SetSustainGain(float sustainGain);
         protected:
-            std::shared_ptr<AudioSource> _soundGenerator;
+            IAudioSource *_soundGenerator;
 
         private:
             float _sustainGain = 0.9f;

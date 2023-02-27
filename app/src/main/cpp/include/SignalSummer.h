@@ -2,16 +2,16 @@
 
 #include <vector>
 #include <memory>
-#include "AudioSource.h"
+#include "IAudioSource.h"
 
 namespace mjmitchelldev_androidsynth {
-    class SignalSummer : public AudioSource {
+    class SignalSummer : public IAudioSource {
         public:
-            SignalSummer(std::vector<std::shared_ptr<AudioSource>> soundGenerators);
+            SignalSummer(std::vector<std::unique_ptr<IAudioSource>> soundGenerators);
             float GetSample() override;
             void OnPlaybackStopped() override;
 
         protected:
-            std::vector<std::shared_ptr<AudioSource>> _soundGenerators;
+            std::vector<std::unique_ptr<IAudioSource>> _soundGenerators;
     };
 }

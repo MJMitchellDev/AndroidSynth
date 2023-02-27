@@ -3,9 +3,9 @@
 
 
 namespace mjmitchelldev_androidsynth {
-    class AudioSource {
+    class IAudioSource {
         public:
-            virtual ~AudioSource() = default;
+            virtual ~IAudioSource() = default;
             virtual float GetSample() = 0;
             virtual void OnPlaybackStopped() = 0;
     };

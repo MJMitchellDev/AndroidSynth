@@ -1,25 +1,25 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include <AudioSource.h>
+#include <IAudioSource.h>
 #include <EnvelopeProcessor.h>
 
 using ::testing::Return;
 
 namespace mjmitchelldev_androidsynth {
-    class MockAudioSource : public AudioSource {
+    class MockAudioSource : public IAudioSource {
         public:
             MOCK_METHOD(float, GetSample, (), (override) );
             MOCK_METHOD(void, OnPlaybackStopped, (), (override) );
     };
 
     TEST(EnvelopeProcessorTests, EnvelopeProcessor_WhenAttacking_AttacksLinearly) {
-        auto audioSource = std::make_shared<MockAudioSource>();
+        auto audioSource = new MockAudioSource();
 
         EXPECT_CALL(*audioSource, GetSample())
             .WillRepeatedly(Return(1.0f));
 
-        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(audioSource, 4.0f);
+        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(*audioSource, 4.0f);
         
         //Set the attack to last 1 second, or 4 frames at a sample rate of 4
         envelopeGenerator->SetAdsr(1.0f, 1.0f, 0.0f, 0.0f);
@@ -43,12 +43,12 @@ namespace mjmitchelldev_androidsynth {
     }
 
     TEST(EnvelopeProcessorTests, EnvelopeProcessor_WhenDecaying_DecaysLinearly) {
-        auto audioSource = std::make_shared<MockAudioSource>();
+        auto audioSource = new MockAudioSource();
 
         EXPECT_CALL(*audioSource, GetSample())
             .WillRepeatedly(Return(1.0f));
 
-        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(audioSource, 4.0f);
+        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(*audioSource, 4.0f);
         
         //Set the decay to last 1 second, or 4 frames at a sample rate of 4
         envelopeGenerator->SetAdsr(0.0f, 1.0f, 1.0f, 0.0f);
@@ -72,12 +72,12 @@ namespace mjmitchelldev_androidsynth {
     }
 
     TEST(EnvelopeProcessorTests, EnvelopeProcessor_WhenSustaining_KeepsValueGainConsistent) {
-        auto audioSource = std::make_shared<MockAudioSource>();
+        auto audioSource = new MockAudioSource();
 
         EXPECT_CALL(*audioSource, GetSample())
             .WillRepeatedly(Return(1.0f));
 
-        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(audioSource, 4.0f);
+        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(*audioSource, 4.0f);
         
         //Set the sustain to last 1 second, or 4 frames at a sample rate of 4
         envelopeGenerator->SetAdsr(0.0f, 0.0f, 1.0f, 0.0f);
@@ -96,12 +96,12 @@ namespace mjmitchelldev_androidsynth {
     }
 
         TEST(EnvelopeProcessorTests, EnvelopeProcessor_WhenProcessingSamples_TransitionsFromAttackToDecayToSustain) {
-        auto audioSource = std::make_shared<MockAudioSource>();
+        auto audioSource = new MockAudioSource();
 
         EXPECT_CALL(*audioSource, GetSample())
             .WillRepeatedly(Return(1.0f));
 
-        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(audioSource, 4.0f);
+        auto envelopeGenerator = std::make_unique<EnvelopeProcessor>(*audioSource, 4.0f);
         
         envelopeGenerator->SetAdsr(0.5f, 0.5f, 1.0f, 0.0f);
         envelopeGenerator->SetSustainGain(0.5f);

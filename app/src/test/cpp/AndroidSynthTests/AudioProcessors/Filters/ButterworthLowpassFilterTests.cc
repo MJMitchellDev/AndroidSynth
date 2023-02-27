@@ -6,7 +6,7 @@
 using ::testing::Return;
 
 namespace mjmitchelldev_androidsynth {
-    class MockAudioSource : public AudioSource {
+    class MockAudioSource : public IAudioSource {
         public:
             MOCK_METHOD(float, GetSample, (), (override) );
             MOCK_METHOD(void, OnPlaybackStopped, (), (override) );

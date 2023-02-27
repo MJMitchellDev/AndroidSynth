@@ -4,7 +4,7 @@
 
 #include "BiquadFilter.h"
 namespace mjmitchelldev_androidsynth {
-    BiquadFilter::BiquadFilter(std::unique_ptr<AudioSource> filterSource, int sampleRate) :
+    BiquadFilter::BiquadFilter(std::unique_ptr<IAudioSource> filterSource, int sampleRate) :
         _b0(0.0), _b1(0.0), _b2(0.0), _a1(0.0), _a2(0.0), _penultimateSample(0.0),
         _prepenultimateSample(0.0), _penultimateFilteredSample(0.0), _prepenultimateFilteredSample(0.0),
         _sampleRate(sampleRate)

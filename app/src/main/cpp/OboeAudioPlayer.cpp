@@ -1,7 +1,7 @@
 #include "OboeAudioPlayer.h"
 
 #include <utility>
-#include "AudioSource.h"
+#include "IAudioSource.h"
 #include "Log.h"
 
 using namespace oboe;
@@ -11,7 +11,7 @@ namespace mjmitchelldev_androidsynth {
     static std::atomic<int> instances{0};
 #endif
 
-    OboeAudioPlayer::OboeAudioPlayer(std::shared_ptr<AudioSource> source,
+    OboeAudioPlayer::OboeAudioPlayer(std::shared_ptr<IAudioSource> source,
             int samplingRate)
             : _source(std::move(source)), _samplingRate(samplingRate) {
 #ifndef NDEBUG
@@ -78,7 +78,7 @@ namespace mjmitchelldev_androidsynth {
         _samplingRate = sampleRate;
     }
 
-    void OboeAudioPlayer::SetAudioSource(std::shared_ptr<AudioSource> audioSource) {
+    void OboeAudioPlayer::SetAudioSource(std::shared_ptr<IAudioSource> audioSource) {
         _source = std::move(audioSource);
     }
 

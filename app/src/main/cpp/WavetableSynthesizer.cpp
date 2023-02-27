@@ -1,7 +1,7 @@
 #include "WavetableSynthesizer.h"
 #include <cmath>
 #include "Log.h"
-#include "AudioPlayer.h"
+#include "IAudioPlayer.h"
 #include "WavetableOscillator.h"
 #include "EnvelopeProcessor.h"
 #include "ButterworthLowPassFilter.h"
@@ -11,22 +11,22 @@ namespace mjmitchelldev_androidsynth {
         return std::pow(10.f, dB / 20.f);
     }
 
-    WavetableSynthesizer::WavetableSynthesizer(std::unique_ptr<AudioPlayer> audioPlayer) {
-        auto waveTable = _wavetableFactory.GetWaveTable(_currentWavetable); 
-        auto oscillator1 = std::make_shared<WavetableOscillator>(waveTable, SamplingRate);
-        auto oscillator2 = std::make_shared<WavetableOscillator>(waveTable, SamplingRate);
+    WavetableSynthesizer::WavetableSynthesizer(std::unique_ptr<IAudioPlayer> audioPlayer)
+    : _oscillators() {
+        auto waveTable = _wavetableFactory.GetWaveTable(_currentWavetable);
 
-        _oscillators = std::vector<std::shared_ptr<WavetableOscillator>>{
-            oscillator1, oscillator2
-        };
+        auto madeOscillator = std::make_unique<WavetableOscillator>(waveTable, SamplingRate);
+        _oscillators.push_back(std::move(madeOscillator));
+        madeOscillator = std::make_unique<WavetableOscillator>(waveTable, SamplingRate);
+        _oscillators.push_back(std::move(madeOscillator));
 
-        auto sources = std::vector<std::shared_ptr<AudioSource>>{
-                std::make_unique<EnvelopeProcessor>(_oscillators[0], SamplingRate),
-                std::make_unique<EnvelopeProcessor>(_oscillators[1], SamplingRate)
-        };
+        std::vector<std::unique_ptr<IAudioSource>> sources;
+        for (auto &oscillator: _oscillators) {
+            sources.push_back( std::make_unique<EnvelopeProcessor>(*oscillator, SamplingRate));
+        }
 
-        _signalSummer = std::make_unique<SignalSummer>(sources);
-        _globalFilter = std::make_unique<ButterworthLowPassFilter>(std::move(_signalSummer), SamplingRate);
+        _signalSummer = std::make_unique<SignalSummer>(std::move(sources));
+        _globalFilter = std::make_shared<ButterworthLowPassFilter>(std::move(_signalSummer), SamplingRate);
 
         _audioPlayer = std::move(audioPlayer);
         _audioPlayer->SetAudioSource(std::move(_globalFilter));
@@ -53,8 +53,12 @@ namespace mjmitchelldev_androidsynth {
 
     void WavetableSynthesizer::SetFrequency(float frequencyInHz) {
         LOGD("Frequency set to %.2f Hz.", frequencyInHz);
-        _oscillators[0]->SetFrequency(frequencyInHz);
-        _oscillators[1]->SetFrequency(frequencyInHz * 5 / 4);
+
+        auto nextFrequency = frequencyInHz;
+        for (auto &oscillator: _oscillators) {
+            oscillator->SetFrequency(nextFrequency);
+            nextFrequency = nextFrequency * 5/4;
+        }
     }
 
     void WavetableSynthesizer::SetFilterCutoffFrequency(float frequencyInHz) {

@@ -11,13 +11,13 @@
 namespace mjmitchelldev_androidsynth {
     class WavetableOscillator;
 
-    class AudioPlayer;
+    class IAudioPlayer;
 
     constexpr auto SamplingRate = 48000.0f;
 
     class WavetableSynthesizer {
         public:
-            WavetableSynthesizer(std::unique_ptr<AudioPlayer> audioPlayer);
+            WavetableSynthesizer(std::unique_ptr<IAudioPlayer> audioPlayer);
             ~WavetableSynthesizer();
             void Play();
             void Stop();
@@ -32,9 +32,9 @@ namespace mjmitchelldev_androidsynth {
             std::mutex _mutex;
             WavetableFactory _wavetableFactory;
             Wavetable _currentWavetable{Wavetable::SINE};
-            std::vector<std::shared_ptr<WavetableOscillator>> _oscillators;
+            std::vector<std::unique_ptr<WavetableOscillator>> _oscillators;
             std::unique_ptr<SignalSummer> _signalSummer;
-            std::unique_ptr<AudioPlayer> _audioPlayer;
-            std::unique_ptr<BiquadFilter> _globalFilter;
+            std::unique_ptr<IAudioPlayer> _audioPlayer;
+            std::shared_ptr<BiquadFilter> _globalFilter;
     };
 }

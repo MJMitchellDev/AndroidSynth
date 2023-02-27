@@ -8,8 +8,8 @@
 
 namespace mjmitchelldev_androidsynth {
 
-    EnvelopeProcessor::EnvelopeProcessor(std::shared_ptr<AudioSource> soundGenerator, float sampleRate) {
-        _soundGenerator = std::move(soundGenerator);
+    EnvelopeProcessor::EnvelopeProcessor(IAudioSource & soundGenerator, float sampleRate) {
+        _soundGenerator = &soundGenerator;
         _sampleRate = sampleRate;
         _currentFrameInCycle = 0;
         _state = EnvelopeState::ATTACK;
@@ -40,7 +40,7 @@ namespace mjmitchelldev_androidsynth {
         return oscillatorValue;
     }
 
-        void EnvelopeProcessor::OnPlaybackStopped() {
+    void EnvelopeProcessor::OnPlaybackStopped() {
         _state = EnvelopeState::ATTACK;
         _soundGenerator->OnPlaybackStopped();
     }

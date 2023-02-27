@@ -16,7 +16,7 @@
 
 #pragma once
 #include <memory>
-#include "AudioSource.h"
+#include "IAudioSource.h"
 
 namespace mjmitchelldev_androidsynth {
     struct BiquadFilterCoefficients {
@@ -27,9 +27,9 @@ namespace mjmitchelldev_androidsynth {
         float b2;
     };
 
-    class BiquadFilter : public AudioSource {
+    class BiquadFilter : public IAudioSource {
         public:
-            BiquadFilter(std::unique_ptr<AudioSource> filterSource, int sampleRate);
+            BiquadFilter(std::unique_ptr<IAudioSource> filterSource, int sampleRate);
 
             float GetSample() override;
             void OnPlaybackStopped() override;
@@ -57,6 +57,6 @@ namespace mjmitchelldev_androidsynth {
             float _prepenultimateFilteredSample;
             bool _initialized = false;
 
-            std::unique_ptr<AudioSource> _filterSource;
+            std::unique_ptr<IAudioSource> _filterSource;
     };
 }
